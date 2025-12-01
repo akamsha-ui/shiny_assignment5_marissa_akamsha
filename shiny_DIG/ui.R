@@ -30,12 +30,13 @@ dig.df <- dig.df %>%
   select(id, trtmt, age, sex, bmi, klevel, creat, diabp, sysbp, hyperten, cvd, whf, dig, hosp, hospdays, death, deathday)
 
 # Define UI for application that draws a histogram
-dashboardPage(
-  dashboardHeader(title = "Basic dashboard"),
+#dashboardHeader(title = "Digoxin Toxicity Trial Analysis")
+dashboardPage(skin = "purple",
+  dashboardHeader(title = "Digoxin Toxicity Trial Analysis"),
   dashboardSidebar(
     sidebarMenu(
-      menuItem("Dashboard", tabName = "dashboard", icon = icon("dashboard")),
-      menuItem("Widgets", tabName = "widgets", icon = icon("th"))
+      menuItem("About the dataset", tabName = "about", icon = icon("dashboard")),
+      menuItem("Analysis", tabName = "analysis", icon = icon("th"))
     )),
   dashboardBody(
     tabItems(

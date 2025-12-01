@@ -5,8 +5,8 @@
 # Find out more about building applications with Shiny here:
 #
 #    https://shiny.posit.co/
-#
-
+#library(tidyverse,janitor)
+library(tidyverse,janitor,ggplot)
 dig_new.df <- dig.df %>%
   
   mutate(

@@ -6,7 +6,7 @@
 #
 #    https://shiny.posit.co/
 #
-
+library(tidyverse,janitor,ggplot)
 dig_new.df <- dig.df %>%
   
   mutate(

@@ -10,6 +10,8 @@ library(janitor)
 library(ggplot2)
 library(bslib)
 library(shiny)
+library(shinydashboard)
+
 
 dig.df <- read.csv("DIG.csv")
 dig.df <- dig.df %>%
@@ -28,10 +30,33 @@ dig.df <- dig.df %>%
   select(id, trtmt, age, sex, bmi, klevel, creat, diabp, sysbp, hyperten, cvd, whf, dig, hosp, hospdays, death, deathday)
 
 # Define UI for application that draws a histogram
-page_sidebar(
-  title = "Digoxin toxicity trial data analysis",
-  sidebar = sidebar("About"),
-  "main contents"
+dashboardPage(
+  dashboardHeader(title = "Basic dashboard"),
+  dashboardSidebar(
+    sidebarMenu(
+      menuItem("Dashboard", tabName = "dashboard", icon = icon("dashboard")),
+      menuItem("Widgets", tabName = "widgets", icon = icon("th"))
+    )),
+  dashboardBody(
+    tabItems(
+      # First tab content
+      tabItem(tabName = "dashboard",
+              fluidRow(
+                box(plotOutput("plot1", height = 250)),
+                box(title = "Controls",
+                    sliderInput("slider", "Number of observations:", 1, 100, 50)
+                )
+              )
+      ),
+      
+      # Second tab content
+      tabItem(tabName = "widgets",
+              h2("Widgets tab content")
+      )
+    )
+  )
+  
 )
+
 
 

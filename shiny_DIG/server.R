@@ -30,11 +30,13 @@ dig.df <- dig.df %>%
   ) %>%
   select(id, trtmt, age, sex, bmi, klevel, creat, diabp, sysbp, hyperten, cvd, whf, dig, hosp, hospdays, death, deathday)
 
-setwd("C:/Users/Marissa/Documents/1. College/1. Masters/3. HDS5105 - Statistical Computing for Biomedical Data/6. Rstudio/shiny_assignment5_marissa_akamsha/shiny_DIG")
+setwd("C:/Users/Marissa/Documents/1. College/1. Masters/3. HDS5105 - Statistical Computing for 
+      Biomedical Data/6. Rstudio/shiny_assignment5_marissa_akamsha/shiny_DIG")
 dig_df <- read.csv("DIG.csv")
 digData <- dig_df %>%
   janitor::clean_names() %>% 
-  select(id, trtmt, age, sex, bmi, klevel, creat, diabp, sysbp, hyperten, cvd, whf, dig, hosp, hospdays, death, deathday)
+  select(id, trtmt, age, sex, bmi, klevel, creat, diabp, sysbp, hyperten, cvd, whf, dig, hosp, 
+         hospdays, death, deathday)
 
 
 para1 = ("The DIG (Digitalis Investigation Group) Trial was a randomized, double-blind, multicenter trial with more than 300 centers in the United States and Canada participating. The purpose of the trial was to examine the safety and efficacy of Digoxin in treating patients with congestive heart failure in sinus rhythm. Digitalis was introduced clinically more than 200 years ago and has since become a commonly prescribed medication for the treatment of heart failure; however, there was considerable uncertainty surrounding its safety and efficacy. Small trials indicated that Digoxin alleviated some of the symptoms of heart failure, prolonged exercise tolerance, and generally improved the quality of patients' lives. Unfortunately, these trials were generally small and although they did focus on the effect of treatment on patients’ relief from heart failure symptoms and quality of life, they failed to address the effect of treatment on cardiovascular outcomes. Questions about the safety of Digoxin were also a concern. Digoxin toxicity is uncommon in small trials with careful surveillance, however, the long-term effects of therapeutic levels of Digoxin were less clear.")
@@ -46,9 +48,6 @@ rev
 
 # Define server logic required to draw a histogram
 function(input, output, session) {
-  # paras <- paste(para1, para2, para3, para4, sep = "\n")
-  # output$info_para <- renderText(paras)
-  
   output$info_para <- renderText({
     HTML("<p>The DIG (Digitalis Investigation Group) Trial was a randomized, double-blind, 
          multicenter trial with more than 300 centers in the United States and Canada participating. 

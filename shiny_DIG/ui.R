@@ -5,14 +5,11 @@ library(shiny)
 library(shinydashboard)
 
 # read the DIG data set (using select for the needed data set)
-setwd("C:/Users/Marissa/Documents/1. College/1. Masters/3. HDS5105 - Statistical Computing for 
-      Biomedical Data/6. Rstudio/shiny_assignment5_marissa_akamsha/shiny_DIG")
 dig_df <- read.csv("DIG.csv")
 digData <- dig_df %>%
   janitor::clean_names() %>% 
   select(id, trtmt, age, sex, bmi, klevel, creat, diabp, sysbp, hyperten, cvd, whf, dig, hosp, 
          hospdays, death, deathday)
-
 #View(dig_df)
 #View(digData)
 
@@ -34,6 +31,7 @@ ui <- dashboardPage(
      tabItem(tabName = "info",
              h2("DIG Trial Dashboard"),
              uiOutput("info_para"),
+             h3("Dataset"),
      tabItem(tabName = "over"),
      tabItem(tabName = "relation"),
      tabItem(tabName = "tables")

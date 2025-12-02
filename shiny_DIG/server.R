@@ -70,4 +70,8 @@ function(input, output, session) {
            hospdays, death, deathday)
   
   output$digds <- renderTable({dig_new.df})
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> 8a14e4fd2858bb170b1644f2969669da2654dce7

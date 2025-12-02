@@ -5,7 +5,7 @@ library(shiny)
 library(shinydashboard)
 
 # read the DIG data set (using select for the needed data set)
-dig_new.df <- dig_df %>%
+dig_new.df <- dig.df %>%
   janitor::clean_names() %>% 
   mutate(
     trtmt = factor(trtmt, levels = c(0,1), labels = c("Placebo", "Treatment")),
@@ -86,21 +86,22 @@ ui <- dashboardPage(
       menuItem("Summary Tables", tabName = "tables")
     )
   ),
- # for the dashboard layout
- dashboardBody(
-   tabItems(
-     tabItem(tabName = "info",
-             h2("DIG Trial Dashboard"),
-             uiOutput("info_para"),
-             h3("Dataset"),
-             div(style = "height:400px; overflow-y: scroll; overflow-x: scroll;", tableOutput("digds"))),
-     tabItem(tabName = "over"),
-     tabItem(tabName = "relation"),
-     tabItem(tabName = "tables")
-   )
- )
+  # for the dashboard layout
+  dashboardBody(
+    tabItems(
+      tabItem(tabName = "info",
+              h2("DIG Trial Dashboard"),
+              uiOutput("info_para"),
+              h3("Legends of the dataset"),
+              uiOutput("legends"),
+              h3("Dataset"),
+              div(style = "height:400px; overflow-y: scroll; overflow-x: scroll;", tableOutput("digds"))),
+      tabItem(tabName = "over"),
+      tabItem(tabName = "relation"),
+      tabItem(tabName = "tables")
+    )
+  )
 )
-
 
 
 

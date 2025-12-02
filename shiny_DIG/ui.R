@@ -25,21 +25,24 @@ ui <- dashboardPage(
   dashboardHeader(title = "DIG Trial Dashboard"),
   dashboardSidebar(
     sidebarMenu(
-      menuItem("info", tabName = "About the data set"),
-      menuItem("over", tabName = "Overview"),
-      menuItem("Analysis for two variables", tabName = "relationships"),
+      menuItem("About the dataset", tabName = "info"),
+      menuItem("Overview", tabName = "over"),
+      menuItem("Analysis for two variables", tabName = "relation"),
       menuItem("Summary Tables", tabName = "tables")
     )
   ),
  # for the dashboard layout
-   dashboardBody(
-    tabItems(
-      tabItem(tabName = "info",
-              h2("DIG Trial Dashboard"),
-              p("Explore key aspects and relationships in the DIG Trial dataset.")
-      ),
-    )
-)
+ dashboardBody(
+   tabItems(
+     tabItem(tabName = "info",
+             h2("DIG Trial Dashboard"),
+             paste("Explore key aspects and relationships in the DIG Trial dataset.")
+     ),
+     tabItem(tabName = "over"),
+     tabItem(tabName = "relation"),
+     tabItem(tabName = "tables")
+   )
+ )
 )
 
 

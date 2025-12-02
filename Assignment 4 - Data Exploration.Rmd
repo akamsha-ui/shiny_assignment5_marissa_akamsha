@@ -58,7 +58,7 @@ library(survival)
 
 ```{r}
 #importing data
-#read.csv("C:/Users/ak/Desktop/gds/r_assignment/DIG.csv")
+read.csv("C:/Users/ak/Desktop/gds/r_assignment/DIG.csv")
 ```
 
 

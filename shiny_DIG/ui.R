@@ -10,8 +10,8 @@ digData <- dig_df %>%
   janitor::clean_names() %>% 
   select(id, trtmt, age, sex, bmi, klevel, creat, diabp, sysbp, hyperten, cvd, whf, dig, hosp, 
          hospdays, death, deathday)
-#View(dig_df)
-#View(digData)
+View(dig_df)
+View(digData)
 
 #UI page layout
 ui <- dashboardPage(
@@ -30,7 +30,7 @@ ui <- dashboardPage(
    tabItems(
      tabItem(tabName = "info",
              h2("DIG Trial Dashboard"),
-             uiOutput("info_para"),
+             verbatimTextOutput("info_para"),
              h3("Dataset"),
      tabItem(tabName = "over"),
      tabItem(tabName = "relation"),

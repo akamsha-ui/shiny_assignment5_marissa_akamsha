@@ -23,7 +23,8 @@ dig_new.df <- dig.df %>%
 #UI page layout
 ui <- dashboardPage(
   skin = "purple",
-  dashboardHeader(title = "DIG Trial Dashboard"),
+  dashboardHeader(title = tags$span("DIG Trial Dashboard",
+                       style = "color: hotpink; front-size: 28px; font-weight:bold;")),
   dashboardSidebar(
     sidebarMenu(
       menuItem("About the dataset", tabName = "info"),
@@ -48,8 +49,3 @@ ui <- dashboardPage(
     )
   )
 )
-
-
-
-
-

@@ -50,6 +50,7 @@ function(input, output, session) {
   output$legends <- renderTable({legends.df}) #rendering
     
   # read the DIG data set (using select for the needed data set)
+  dig.df <-read.csv("DIG.csv")
   dig_new.df <- dig.df %>%
     janitor::clean_names() %>% 
     mutate(

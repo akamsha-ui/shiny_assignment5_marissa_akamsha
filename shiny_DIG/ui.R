@@ -22,8 +22,12 @@ library(shinydashboard)
 #UI page layout
 ui <- dashboardPage(
   skin = "green",
-  dashboardHeader(title = tags$span("DIG Trial Dashboard",
-                       style = "color: fuchsia; front-size: 28px; font-weight:bold;")),
+  
+  dashboardHeader(
+    title = tags$span("DIG Trial Dashboard",
+                      style = "color: fuchsia; font-size: 20px; font-weight:bold;")  # fixed front-size → font-size
+  ),
+  
   dashboardSidebar(
     sidebarMenu(
       menuItem("About the dataset", tabName = "info"),
@@ -32,8 +36,20 @@ ui <- dashboardPage(
       menuItem("Summary Tables", tabName = "tables")
     )
   ),
-  # for the dashboard layout
+  
   dashboardBody(
+    # CSS to style the sidebar menu item
+    tags$head(
+      tags$style(HTML("
+        /* Style 'About the dataset' menuItem */
+        .sidebar-menu li a[data-value='info'] {
+          color: lime !important;       /* text color */
+          font-size: 18px !important;      /* optional font size */
+          font-weight: bold !important;    /* optional bold */
+        }
+      "))
+    ),
+    
     tabItems(
       tabItem(tabName = "info",
               h2("About the Trial"),
@@ -41,7 +57,8 @@ ui <- dashboardPage(
               h3("Legends of the dataset"),
               uiOutput("legends"),
               h3("Dataset"),
-              div(style = "height:400px; overflow-y: scroll; overflow-x: scroll;", tableOutput("digds"))),
+              div(style = "height:400px; overflow-y: scroll; overflow-x: scroll;", tableOutput("digds"))
+      ),
       tabItem(tabName = "over"),
       tabItem(tabName = "relation"),
       tabItem(tabName = "tables")

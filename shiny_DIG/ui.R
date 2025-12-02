@@ -5,25 +5,25 @@ library(shiny)
 library(shinydashboard)
 
 # read the DIG data set (using select for the needed data set)
-dig_new.df <- dig.df %>%
-  janitor::clean_names() %>% 
-  mutate(
-    trtmt = factor(trtmt, levels = c(0,1), labels = c("Placebo", "Treatment")),
-    sex = factor(sex, levels = c(1,2), labels = c("Males", "Females")),
-    hyperten = factor(hyperten, levels = c(0,1), labels = c("No","Yes")),
-    cvd = factor(cvd, levels = c(0,1), labels = c("No","Yes")),
-    whf = factor(whf, levels = c(0,1), labels = c("No","Yes")),
-    dig = factor(dig, levels = c(0,1), labels = c("No","Yes")),
-    hosp = factor(hosp, levels = c(0,1), labels = c("No","Yes")),
-    death = factor(death, levels = c(0,1), labels = c("Alive","Death"))) %>%
-  select(id, trtmt, age, sex, bmi, klevel, creat, diabp, sysbp, hyperten, cvd, whf, dig, hosp, 
-         hospdays, death, deathday)
+# dig_new.df <- dig.df %>%
+#   janitor::clean_names() %>% 
+#   mutate(
+#     trtmt = factor(trtmt, levels = c(0,1), labels = c("Placebo", "Treatment")),
+#     sex = factor(sex, levels = c(1,2), labels = c("Males", "Females")),
+#     hyperten = factor(hyperten, levels = c(0,1), labels = c("No","Yes")),
+#     cvd = factor(cvd, levels = c(0,1), labels = c("No","Yes")),
+#     whf = factor(whf, levels = c(0,1), labels = c("No","Yes")),
+#     dig = factor(dig, levels = c(0,1), labels = c("No","Yes")),
+#     hosp = factor(hosp, levels = c(0,1), labels = c("No","Yes")),
+#     death = factor(death, levels = c(0,1), labels = c("Alive","Death"))) %>%
+#   select(id, trtmt, age, sex, bmi, klevel, creat, diabp, sysbp, hyperten, cvd, whf, dig, hosp, 
+#          hospdays, death, deathday)
 
 #UI page layout
 ui <- dashboardPage(
-  skin = "purple",
+  skin = "green",
   dashboardHeader(title = tags$span("DIG Trial Dashboard",
-                       style = "color: hotpink; front-size: 28px; font-weight:bold;")),
+                       style = "color: yellow; front-size: 28px; font-weight:bold;")),
   dashboardSidebar(
     sidebarMenu(
       menuItem("About the dataset", tabName = "info"),
@@ -47,8 +47,4 @@ ui <- dashboardPage(
       tabItem(tabName = "tables")
     )
   )
-<<<<<<< HEAD
 )
-=======
-)
->>>>>>> 5f4b61026fa18cfa6bc5067d163df9498f302c30

@@ -43,11 +43,25 @@ ui <- dashboardPage(
       tags$style(HTML("
         /* Style 'About the dataset' menuItem */
         .sidebar-menu li a[data-value='info'] {
-          color: lime !important;       /* text color */
+          color: orange !important;       /* text color */
           font-size: 18px !important;      /* optional font size */
           font-weight: bold !important;    /* optional bold */
         }
-      "))
+      "), 
+      ("/* Style 'Overview' menuItem */
+        .sidebar-menu li a[data-value='over'] {
+          color: orange !important;       /*text color*/
+          font-size: 18px !important;      /*font size*/
+          font-weight: bold !important;    /*optional bold*/
+        }
+       "),
+      ("/* Style 'Analysis for two variables' menuItem */
+        .sidebar-menu li a[data-value='relation'] {
+          color: orange !important;       /*text color*/
+          font-size: 18px !important;      /*font size*/
+          font-weight: bold !important;    /*optional bold*/
+        }
+       "))
     ),
     
     tabItems(

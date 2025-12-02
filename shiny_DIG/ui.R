@@ -35,7 +35,7 @@ ui <- dashboardPage(
   dashboardBody(
     tabItems(
       tabItem(tabName = "info",
-              h2("DIG Trial Dashboard"),
+              h2("About the Trial"),
               uiOutput("info_para"),
               h3("Legends of the dataset"),
               uiOutput("legends"),

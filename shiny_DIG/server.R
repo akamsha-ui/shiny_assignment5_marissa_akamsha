@@ -55,7 +55,7 @@ function(input, output, session) {
          Therefore, it would be inappropriate to use this dataset for other research or 
          publication purposes.<p>")
   })
-  dig_new.df <- dig_df %>%
+  dig_new.df <- dig.df %>%
     janitor::clean_names() %>% 
     mutate(
       trtmt = factor(trtmt, levels = c(0,1), labels = c("Placebo", "Treatment")),
@@ -68,7 +68,6 @@ function(input, output, session) {
       death = factor(death, levels = c(0,1), labels = c("Alive","Death"))) %>%
     select(id, trtmt, age, sex, bmi, klevel, creat, diabp, sysbp, hyperten, cvd, whf, dig, hosp, 
            hospdays, death, deathday)
-
+  
   output$digds <- renderTable({dig_new.df})
-  }
-
+}

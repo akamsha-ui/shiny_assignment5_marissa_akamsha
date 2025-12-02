@@ -23,7 +23,7 @@ library(shinydashboard)
 ui <- dashboardPage(
   skin = "green",
   dashboardHeader(title = tags$span("DIG Trial Dashboard",
-                       style = "color: yellow; front-size: 28px; font-weight:bold;")),
+                       style = "color: fuchsia; front-size: 28px; font-weight:bold;")),
   dashboardSidebar(
     sidebarMenu(
       menuItem("About the dataset", tabName = "info"),

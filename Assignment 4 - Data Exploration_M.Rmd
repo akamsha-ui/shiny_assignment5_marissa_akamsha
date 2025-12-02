@@ -1,0 +1,464 @@
+---
+title: "Assignment 4 - Data Exploration"
+author: "Marissa Fernandes, id=25235665"
+date: "`r format(Sys.time(), '%d %B, %Y')`"
+output: html_document
+---
+
+```{r Library install, include=FALSE}
+# loading library
+library(tidyr)    
+library(plotly)
+library(GGally)
+library(table1)
+library(readr)
+library(tidyverse)
+library(janitor)
+library(lubridate)
+library(gifski)
+library(ggsurvfit)
+library(survminer)
+library(survival)
+library(cowplot)
+setwd("C:/Users/Marissa/Documents/1. College/1. Masters/3. HDS5105 - Statistical Computing for Biomedical Data/4. Assignments")
+```
+
+## Introduction
+
+The DIG (Digitalis Investigation Group) Trial was a randomized, double-blind, multicenter trial with more than 300 centers in the United States and Canada participating. The purpose of the trial was to examine the safety and efficacy of Digoxin in treating patients with congestive heart failure in sinus rhythm. Digitalis was introduced clinically more than 200 years ago and has since become a commonly prescribed medication for the treatment of heart failure; however, there was considerable uncertainty surrounding its safety and efficacy. Small trials indicated that Digoxin alleviated some of the symptoms of heart failure, prolonged exercise tolerance, and generally improved the quality of patients' lives. Unfortunately, these trials were generally small and although they did focus on the effect of treatment on patients’ relief from heart failure symptoms and quality of life, they failed to address the effect of treatment on cardiovascular outcomes. Questions about the safety of Digoxin were also a concern. Digoxin toxicity is uncommon in small trials with careful surveillance, however, the long-term effects of therapeutic levels of Digoxin were less clear.
+
+The DIG dataset consists of baseline and outcome data from the main DIG trial. In the main trial, heart failure patients meeting the eligibility criterion and whose ejection fraction was 45% or less were randomized to receive either a placebo or digoxin. Outcomes assessed in the trial included: cardiovascular mortality, hospitalization or death from worsening heart failure, hospitalization due to other cardiovascular causes and hospitalization due to non-cardiovascular causes.
+
+The **DIG** dataset was obtained for the purpose of this assignment and is enclosed with this assignment. The codebook associated with the variables is also enclosed with your assignment.
+
+In order to create an anonymous dataset that protects patient confidentiality, most variables have been permuted over the set of patients within treatment group. Therefore, it would be inappropriate to use this dataset for other research or publication purposes.
+
+## Instructions
+
+Change my name and id to yours in YAML above and complete the tasks below by inserting the required code in the R chunks provided under each task. Then knit the document to generate a html document with your solutions.
+
+## Data Management
+
+### Task 1 
+
+-   Read in the csv file `DIG.csv` provided in your assignment and call it `dig.df`.
+
+-   Select the following variables from the data: `ID, TRTMT, AGE, SEX, BMI, KLEVEL, CREAT, DIABP, SYSBP` and `HYPERTEN, CVD, WHF, DIG, HOSP, HOSPDAYS, DEATH, DEATHDAY`.
+
+-   And convert each column to a datatype that is most relevant. i.e. characters to character, numbers to numeric, etc.
+
+```{r Answer 1 Data import}
+## Insert your code here
+dig.df <- read_csv("DIG.csv") %>%
+  select(ID, TRTMT, AGE, SEX, BMI, KLEVEL, CREAT, DIABP, SYSBP, HYPERTEN, CVD, WHF, DIG, HOSP, HOSPDAYS, DEATH, DEATHDAY)
+
+dig.df
+```
+
+### Task 2 
+
+-   Using the codebook provided, label the factor variables in the data appropriately.
+
+```{r Task 2}
+dig_f.df <- dig.df %>%
+  mutate(
+    TRTMT = factor(TRTMT, levels = c(0, 1), labels = c("Placebo", "Treatment")),
+    SEX = factor(SEX, levels = c(1, 2), labels = c("Male", "Female")),
+    HYPERTEN = factor(HYPERTEN, levels = c(0, 1), labels = c("No", "Yes")),
+    CVD = factor(CVD, levels = c(0, 1), labels = c("No", "Yes")),
+    WHF = factor(WHF, levels = c(0, 1), labels = c("No", "Yes")),
+    DIG = factor(DIG, levels = c(0, 1), labels = c("No", "Yes")),
+    HOSP = factor(HOSP, levels = c(0, 1), labels = c("No", "Yes")),
+    DEATH = factor(DEATH, levels = c(1, 0), labels = c("Death", "Alive"))
+  )
+dig_f.df
+
+```
+
+## Data Exploration
+
+Use both appropriate **summary statistics** and **visualisation** to answer the questions below.
+
+-   **Note:** you must use appropriate labeling, captions and legends for your graphics and tables.
+
+-   **Note:** you must use alternative colouring than the default coloring for your plots.
+
+-   **Note:** you must **interpret** all your summaries and figures in order to answer the question that was asked.
+
+-   **Note:** where appropriate use interactive graphics.
+
+-   **Hint:** package **table1** could be quite helpful in obtaining summary statistics. For more info visit [here](https://cran.r-project.org/web/packages/table1/vignettes/table1-examples.html).
+
+#### Question 1: 
+
+Summarise the number (and proportion) of patients hired within each treatment group.
+
+```{r Answer 1}
+## labeling the Column names
+label(dig_f.df$TRTMT) <- "Treatment"
+label(dig_f.df$AGE) <- "Age"
+label(dig_f.df$SEX) <- "Sex"
+label(dig_f.df$BMI) <- "BMI"
+label(dig_f.df$KLEVEL) <- "Serum Potassium level"
+label(dig_f.df$CREAT) <- "Serum Creatinine (mg/dL)"
+label(dig_f.df$DIABP) <- "Diastolic BP (mmHg)"
+label(dig_f.df$SYSBP) <- "Sysolic BP (mmHg)"
+label(dig_f.df$HYPERTEN) <- "History of Hypertension"
+label(dig_f.df$CVD) <- "Hospitalization due to Cardiovascular Disease"
+label(dig_f.df$WHF) <- "Hospitalization due to Worsening Heart Failure"
+label(dig_f.df$DIG) <- "Hospitalization due to Digoxin Toxicity"
+label(dig_f.df$HOSP) <- "Any Hospitalization"
+label(dig_f.df$DEATH) <- "Vital Status of Patient"
+
+
+table1(~ TRTMT | SEX, data = dig_f.df, caption = "Summary of patients hired within each treatment group")
+
+```
+
+***Interpretation*** From the above table, there is a balanced distribution between the treatment groups of treated and placebo patients with 50% each. There are more males ( N = 5281) than females ( N = 1519) in the total sample.
+
+#### Question 2: 
+
+Assess if there is any significant differences in base-line characteristics (e.g. Age, Sex, BMI, ...) between the patients assigned to digoxin and patients assigned to placebo and comment on any unusual pattern you see:
+
+```{r Answer 2}
+# Data prep
+baseline.df <- read.csv("DIG.csv")%>%
+  select(TRTMT, SEX, AGE, BMI, KLEVEL, CREAT, DIABP, SYSBP, HYPERTEN, CVD, WHF, DIG, HOSP, DEATH)
+baseline.df<-na.omit(baseline.df)
+head(baseline.df)
+
+# Parallel coordinate plot
+p2 <- baseline.df %>% 
+  plot_ly(type = 'parcoords',
+          line = list(color = baseline.df$TRTMT,
+                      colorscale = list(c(0, '#A2CD5A'), c(1, '#FF7F00')),
+                      showscale = T,
+                      alpha = 0.4),
+  dimensions = list(
+    list(tickvals = c(0, 1), ticktext = c('Placebo', 'Treatment'), label = "TRTMT" ,values = baseline.df$TRTMT),
+    list(range = c(min(baseline.df$AGE), max(baseline.df$AGE)), label = "AGE", values = baseline.df$AGE),
+    list(range = c(min(baseline.df$BMI), max(baseline.df$BMI)), label = "BMI", values = baseline.df$BMI),   
+    list(range = c(min(baseline.df$KLEVEL), max(baseline.df$KLEVEL)),label = "KLEVEL", values = baseline.df$KLEVEL),
+    list(range = c(min(baseline.df$CREAT), max(baseline.df$CREAT)), label = "CREAT", values = baseline.df$CREAT),
+    list(range = c(min(baseline.df$DIABP), max(baseline.df$DIABP)), label = "DIABP", values = baseline.df$DIABP),
+    list(range = c(min(baseline.df$SYSBP), max(baseline.df$SYSBP)), label = "SYSBP", values = baseline.df$SYSBP),
+    list(tickvals = c(1, 2), ticktext = c('Male', 'Female'), label = "SEX", values = baseline.df$SEX)
+  ))%>%
+     layout(margin = list(t = 100), ##bottom margin in pixels
+         annotations = 
+           list(x = .5, y = 1.22, #position of text adjust as needed 
+                text = "Baseline Characteristics of Study Participants by Treatment Group", 
+                showarrow = F, 
+                font=list(size=15, color="black")))
+
+# displaying the plot
+p2
+```
+
+***Interpretation*** Plotting the base line characteristics, each of the variable is a coordinate. The two treatment groups are Placebo group (as yellow lines) and Treatment group (as purple lines). An outlier of 434 can be observed in the KLEVEL coordinate, which could have been a clerical error.
+
+#### Question 3: 
+
+Assess if the overall mortality was affected by the treatment.
+
+```{r Answer 3}
+# Table1
+table1(~ DEATH | TRTMT, data = dig_f.df, caption = "Overall mortality was affected by the treatment")
+
+# Data as tibble
+df3 <- dig_f.df%>%
+    mutate(DEATH = factor(DEATH, levels = c("Death", "Alive"), labels = c("Dead", "Alive")))%>%
+  group_by(TRTMT, DEATH) %>%
+  summarise(total = n()) %>%
+  mutate("per%" = (total / sum(total)) * 100) %>%
+  ungroup()%>%
+  mutate(text = paste("Group: ", TRTMT, "\nStatus: ", DEATH, "\nCount: ", total)) 
+df3
+
+# Displaying the plot
+# Stacked bar plot
+p3 <- ggplot(df3, aes(x = TRTMT, y = total, fill = DEATH), hover = text) +
+  geom_bar(alpha = 0.7, stat = "identity", colour = "black") +
+  scale_fill_manual(values = c("#FB607F", "#FE5A1D")) +
+  labs(title = "Stacked Bar Plot of Mortality by Treatment Group",
+       x = "Treatment",
+       y = "Population",
+       fill = "Death")
+
+ggplotly(p3) #as plotly, interactive
+```
+
+***Interpretation*** The mortality ratio between the placebo and treatment patients are nearly the same missing by a slight margin. For both the dead patients are less than half of the total.
+
+#### Question 4: 
+
+Assess if the Cardiovascular disease (`CVD`) is associated with the mortality overall and also within each treatment group.
+
+```{r Answer 4, warning = FALSE}
+## Table1
+table1(~ CVD | TRTMT + DEATH, data = dig_f.df,
+       caption = "Mortality by Treatment Group")
+
+# Data as tibble
+df4 <- dig_f.df%>%
+  mutate(CVD = factor(CVD, levels = c("No", "Yes"), labels = c("No presence of CVD", "Presence of CVD")))%>%
+  group_by(TRTMT, DEATH, CVD) %>%
+  summarise(total = n()) %>%
+  ungroup() %>%
+  mutate(text = paste("Group: ", TRTMT, "\nStatus: ", DEATH, "\nCVD: ", CVD, "\nCount: ", total)) 
+df4
+
+# Combined bar plot
+p4<- plot_ly(
+  data = df4,
+  x = ~CVD,
+  y = ~total,
+  color = ~interaction(TRTMT, DEATH, sep = " "),
+  type = "bar",
+  text = ~text,
+  barmode = 'group'
+) %>%
+  layout(
+     title = "CVD Status by Mortality within Each Treatment Group",
+     xaxis = list(title = "Cardiovascular Disease(CVD) Status"),
+     yaxis = list(title = "Count")
+   )
+ggplotly(p4) #as plotly, interactive
+```
+
+***Interpretation*** Comparing between the two CVD status, No presence of CVD (left) and Presence of CVD (right). CVD is more likely with the following mortality and treatment groups : - Those alive with no presence of CVD have a higher likelihood of survival compared to the rest. among the two it is those who have taken the treatment. - among both CVD status, the cases of death are the least as well.
+
+#### Question 5:
+
+Assess if the hospitalizations was affected by the treatment.
+
+```{r Answer 5}
+# table1
+table1(~ TRTMT | HOSP, data = dig_f.df, caption = "Overall hospitalizations affected by the treatment")
+
+# #tibble
+df5 <- dig_f.df%>%
+    mutate(HOSP = factor(HOSP, levels = c("No", "Yes"), labels = c("No Hospitalizations", "Hospitalization")))%>%
+  group_by(TRTMT, HOSP) %>%
+  summarise(total = n()) %>%
+  mutate("per%" = (total / sum(total)) * 100) %>%
+  ungroup()
+df5
+
+# Stacked bar plot  
+p5 <- ggplot(df5, aes(x = TRTMT, y = total, fill = HOSP)) +
+  geom_bar(alpha = 0.7, stat = "identity", colour = "black") +
+  scale_fill_manual(values = c("#7BA05B", "#007FFF")) +
+  labs(title = "Stacked Bar Plot of Hospitalizations by Treatment Group",
+       x = "Treatment",
+       y = "Population",
+       fill = "Hospitalizations")
+
+ggplotly(p5) #as plotly, interactive
+```
+
+***Interpretation*** The hospitalizations ratio between the placebo and treatment patients are nearly the same missing by a margin. For both the dead patients are less than half of the total.
+
+#### Question 6:
+
+Assess if the Worsening heart failure (`WHF`) is associated with the hospitalizations overall and also within each treatment group:
+
+```{r Answer 6, warning = FALSE}
+## Table1
+table1(~ WHF | TRTMT + HOSP, data = dig_f.df,
+       caption = "Worsening Heart Failure by Treatment Group and Hospitalizations")
+
+# Data as tibble
+df6 <- dig_f.df%>%
+  mutate(HOSP = factor(HOSP, levels = c("No", "Yes"), labels = c("No Hospitalizations", "Hospitalization")))%>%
+  group_by(TRTMT, WHF, HOSP) %>%
+  summarise(total = n()) %>%
+  ungroup() %>%
+  mutate(text = paste("Group: ", TRTMT, "\nStatus: ", WHF, "\nHospitalizations: ", HOSP, "\nCount: ", total)) 
+df6
+
+# combined bar plot
+# displaing the plot
+p6<- plot_ly(
+  data = df6,
+  x = ~WHF,
+  y = ~total,
+  color = ~interaction(TRTMT, HOSP, sep = " "),
+  type = "bar",
+  text = ~text,
+  barmode = 'group'
+) %>%
+  layout(
+    title = "WHF Status by Hospitalization within Each Treatment Group",
+    xaxis = list(title = "Worsening Heart Failure (WHF) Status", tickvals = c("No", "Yes"), ticktext= c("No presence of WHF", "Presence of WHF")),
+    yaxis = list(title = "Count")
+  )
+ggplotly(p6) #as plotly, interactive
+```
+
+***Interpretation*** Comparing between the two WHF status, No presence of WHF (left) and Presence of WHF (right). Patients with no presence of WHF and treatment are more likely with the following mortality and treatment groups : - Those alive with no presence of CVD have a higher likelihood of survival compared to the rest. among the two it is those who have taken the treatment. - among both CVD status, the cases of death are the least as well.
+
+#### Question 7:
+
+Create a new variable `Month` by dividing the variable `DEATHDAY` to 30 and round it to the nearest whole number.
+
+```{r Answer 7}
+## Insert your code here
+df7 <- dig_f.df %>%
+  mutate(Month = round(DEATHDAY/30))
+head(df7)
+```
+
+#### Question 8:
+
+Summarise the variable `Month` created above.
+
+```{r Answer 8}
+# Data
+df8 <- df7  %>%
+   summarise(Minimum = paste(min(Month), "month"),
+            Maximum = paste(max(Month), "month"),
+            Mean = paste(round(mean(Month),2), "month"),
+            Median = paste(round(median(Month),2), "month"),
+            "Standard Deviation" = paste(round(sd(Month),2), "month"))
+df8
+
+# Table1
+table1(~ Month, data = df7,
+       caption = "Summary of Months till last followup or death")
+
+```
+
+***Interpretation*** From the Table the minimum deaths occurred in less than a month of the study starting, and the maximum number of deaths occurred in the 59th month of the study starting.
+
+#### Question 9:
+
+Summarise the risk of mortality within each month.
+
+**HINT:** you may want to use `survfit` function in **Survival** package to extract required mortality rate within each month. For an example see [here](https://www.rdocumentation.org/packages/survival/versions/3.5-7/topics/summary.survfit)
+
+```{r Answer 9}
+# Data
+df9 <- read_csv("DIG.csv")
+df9 <- df9 %>%
+  select(ID, TRTMT, AGE, SEX, BMI, KLEVEL, CREAT, DIABP, SYSBP, HYPERTEN, CVD, WHF, DIG, HOSPDAYS,HOSP, DEATHDAY, DEATH)%>%
+  janitor::clean_names()%>%
+  mutate(status = death)%>%
+  mutate(month = round(deathday/30))
+
+# Survival curve
+obj <- Surv(time = df9$month, event = df9$status)
+s1 <- survfit(obj ~1, data = df9)
+
+p9 <-ggsurvfit(s1, linewidth = 1, colour = "red3") + 
+  labs(x = "Month", y = "Overall survival", title = "The risk of mortality within each month")+
+  add_risktable()
+  scale_ggsurvfit()
+
+p9
+ggplotly(p9) #as plotly, interactive 
+```
+
+***Interpretation*** From the data set as the months pass by the risk of mortality decreases.
+
+#### Question 10:
+
+Summarise the risk of mortality within each month and for each treatment group.
+
+```{r Answer 10}
+# Data
+df10 <- df9
+table(df10$trtmt)
+s2 <- survfit(obj ~trtmt, data = df10)
+
+# Kaplan-Meier survival plot
+p10 <-ggsurvplot(s2, data = df10, 
+           linewidth = 1,
+           palette = c("orange", "blue"),
+           censor.shape = '|', censor.size = 4,
+           conf.int = TRUE,
+           risk.table = TRUE,
+           risk.table.col = 'strata',
+           legend.labs = list('0' = "Placebo", "1" = "Treatment"),
+           risk.table.height = 0.25,
+           title = "Risk of mortality within each month and treatment group")
+p10
+colnames(df10)
+```
+
+***Interpretation*** From the data set with respect to treatment there is a slight difference between the risk of mortality between the treatment groups.
+
+#### Question 11:
+
+Assess the effect of `CVD` on the risk of mortality within each month and for each treatment group:
+
+```{r Answer 11}
+
+df11 <- df10 %>%
+mutate(
+    trtmt = factor(trtmt, levels = c(0, 1), labels = c("Placebo", "Treatment")),
+    death = factor(death, levels = c(1, 0), labels = c("Death", "Alive")),
+    cvd = factor(cvd, levels = c(0, 1), labels = c("No history of CVD", "History of CVD")))%>%
+  group_by(month, trtmt, cvd) %>%
+  summarise(alive = sum(death == "Alive"),
+            dead = sum(death == "Death"),
+            total = n(),
+            prop_alive = alive / total,
+            prop_dead = dead / total) %>%
+  ungroup()
+
+# plot alive proportion as line
+df11a<- ggplot(df11, aes(x = month, y = prop_alive, color = trtmt, linetype = factor(cvd))) +
+  geom_line(size = 1.2) +
+  labs(x = "Month", 
+       y = "Proportion Alive", 
+       color = "Treatment", 
+       linetype = "CVD Status") +
+  theme_minimal()
+df11a
+# plot dead proportion as line
+df11b<- ggplot(df11, aes(x = month, y = prop_dead, color = trtmt, linetype = factor(cvd))) +
+  geom_line(size = 1.2) +
+  labs(x = "Month", 
+       y = "Proportion Dead", 
+       color = "Treatment", 
+       linetype = "CVD Status") +
+  theme_minimal()
+df11b
+
+
+title <- ggdraw() + 
+  draw_label(
+    "Effect of CVD on the risk of mortality within months and treatment groups",
+    fontface = 'bold',
+    x = 0,
+    hjust = 0
+  ) +
+  theme(
+    # add margin on the left of the drawing canvas,
+    # so title is aligned with left edge of first plot
+    plot.margin = margin(0, 0, 0, 7)
+  )
+plot_row <-plot_grid(df11a, df11b, labels = c('Alive proportion', 'Dead proportion'))
+plot_grid(title, plot_row, ncol = 1, rel_heights = c(0.1, 1))
+```
+
+***Interpretation*** As the proportion of alive is less and death is more at the beginning the inverse happens at the end, according to the dataset.
+
+#### Question 12:
+
+Assess if there is any linear relationship between systolic and diastolic blood pressures? Is this relationship affected by the treatment the patients received or whether patients have hypertension or not?
+
+```{r, warning = FALSE}
+ggplot(data = dig.df,
+       mapping = aes(x = DIABP, y = SYSBP, colour = TRTMT)) +
+  geom_point() +
+  geom_smooth(method = "lm", se = FALSE)+
+  labs(x = "Diastolic BP (mmHg)", 
+       y = "Sysolic BP (mmHg)", 
+       linetype = "Treatment")
+
+```
+
+***Interpretation*** no evidence of a linear relationship between systolic and diastolic blood pressures within the treatment groups, as indicated by the flat fitted lines for both treatment types

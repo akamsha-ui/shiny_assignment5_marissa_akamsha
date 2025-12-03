@@ -25,21 +25,18 @@ dig_new.df <- dig.df %>%
 #UI page layout
 dig_n.df <- dig_new.df |> select(where(is.numeric))
 #View(dig_n.df)
-ui <- dashboardPage(
-  skin = "green",
-  
+ui <- dashboardPage(skin = "green",
   dashboardHeader(
     title = tags$span("DIG Trial Dashboard",
-                      style = "color: white; font-size: 20px; font-weight:bold;")  # fixed front-size → font-size
-  ),
+                      style = "color: white; font-size: 20px; font-weight:bold;")  # fixed front-size -> font-size
+    ),
   
   dashboardSidebar(
     sidebarMenu(
       menuItem("About the dataset", tabName = "info"),
       menuItem("Overview", tabName = "over"),
       menuItem("Analysis for two variables", tabName = "relation"),
-      menuItem("Summary Tables", tabName = "tables")
-    )
+      menuItem("Summary Tables", tabName = "tables"))
   ),
   
   dashboardBody(
@@ -77,6 +74,7 @@ ui <- dashboardPage(
               h3("Dataset"),
               div(style = "height:400px; overflow-y: scroll; overflow-x: scroll;", tableOutput("digds"))
       ),
+<<<<<<< HEAD
       
       tabItem(tabName = "relation",
               h2("Two Variable Analysis"),
@@ -91,4 +89,21 @@ ui <- dashboardPage(
       tabItem(tabName = "tables")
     )
   )
+=======
+      tabItem(tabName = "over",
+              #selectInput("variable", "Choose variable:", names(digData)),
+              plotlyOutput("overviewPlot"),
+              #tableOutput("overviewSummary"),
+      
+  #    # tabItem(tabName = "relation",
+  #             selectInput("xvar", "X Variable:", names(digData)),
+  #             selectInput("yvar", "Y Variable:", names(digData)),
+  #             plotOutput("relationshipPlot"),
+  #             tableOutput("relationshipSummary")
+  #     ),
+  #    # tabItem(tabName = "tables")
+     )
+   )
+>>>>>>> 314e0678e3bcbb39d7c8d78ec013c3b0d80e0951
+)
 )

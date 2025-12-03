@@ -3,11 +3,7 @@ library(janitor)
 library(ggplot2)
 library(shiny)
 library(shinydashboard)
-<<<<<<< HEAD
-library(grDevices)
-=======
 library(rsconnect)
->>>>>>> 42f8883d69a97a058364ce156d01f3c66cd6ff28
 
 # read the DIG data set (using select for the needed data set)
 dig.df <- read.csv("DIG.csv")
@@ -29,21 +25,18 @@ dig_new.df <- dig.df %>%
 #UI page layout
 dig_n.df <- dig_new.df |> select(where(is.numeric))
 #View(dig_n.df)
-ui <- dashboardPage(
-  skin = "green",
-  
+ui <- dashboardPage(skin = "green",
   dashboardHeader(
     title = tags$span("DIG Trial Dashboard",
-                      style = "color: white; font-size: 20px; font-weight:bold;")  # fixed front-size → font-size
-  ),
+                      style = "color: white; font-size: 20px; font-weight:bold;")  # fixed front-size -> font-size
+    ),
   
   dashboardSidebar(
     sidebarMenu(
       menuItem("About the dataset", tabName = "info"),
       menuItem("Overview", tabName = "over"),
       menuItem("Analysis for two variables", tabName = "relation"),
-      menuItem("Summary Tables", tabName = "tables")
-    )
+      menuItem("Summary Tables", tabName = "tables"))
   ),
   
   dashboardBody(
@@ -83,17 +76,17 @@ ui <- dashboardPage(
       ),
       tabItem(tabName = "over",
               #selectInput("variable", "Choose variable:", names(digData)),
-              plotOutput("overviewPlot"),
-              #tableOutput("overviewSummary")
-              ),
+              plotlyOutput("overviewPlot"),
+              #tableOutput("overviewSummary"),
       
-      tabItem(tabName = "relation",
-              selectInput("xvar", "X Variable:", names(digData)),
-              selectInput("yvar", "Y Variable:", names(digData)),
-              plotOutput("relationshipPlot"),
-              tableOutput("relationshipSummary")
-      ),
-      tabItem(tabName = "tables")
-    )
-  )
+  #    # tabItem(tabName = "relation",
+  #             selectInput("xvar", "X Variable:", names(digData)),
+  #             selectInput("yvar", "Y Variable:", names(digData)),
+  #             plotOutput("relationshipPlot"),
+  #             tableOutput("relationshipSummary")
+  #     ),
+  #    # tabItem(tabName = "tables")
+     )
+   )
+)
 )

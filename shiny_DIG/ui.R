@@ -4,6 +4,7 @@ library(ggplot2)
 library(shiny)
 library(shinydashboard)
 library(rsconnect)
+library(plotly)
 
 # read the DIG data set (using select for the needed data set)
 dig.df <- read.csv("DIG.csv")
@@ -70,22 +71,12 @@ ui <- dashboardPage(skin = "green",
               h2("About the Trial"),
               uiOutput("info_para"),
               h3("Legends of the dataset"),
-              uiOutput("legends"),
+              dataTableOutput("legends"),
               h3("Dataset"),
-              div(style = "height:400px; overflow-y: scroll; overflow-x: scroll;", tableOutput("digds"))
-      ),
-      tabItem(tabName = "over",
-              #selectInput("variable", "Choose variable:", names(digData)),
-              plotlyOutput("overviewPlot"),
-              #tableOutput("overviewSummary"),
+              dataTableOutput("digds")),
       
-  #    # tabItem(tabName = "relation",
-  #             selectInput("xvar", "X Variable:", names(digData)),
-  #             selectInput("yvar", "Y Variable:", names(digData)),
-  #             plotOutput("relationshipPlot"),
-  #             tableOutput("relationshipSummary")
-  #     ),
-  #    # tabItem(tabName = "tables")
+      tabItem(tabName = "over")
+
      )
    )
 )

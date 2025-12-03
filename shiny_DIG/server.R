@@ -68,9 +68,10 @@ function(input, output, session) {
   
   ##overview page
   output$over_ds <- renderText({
-    HTML("<p>The below Coordinate Graph plots the base line characteristics (continous data). 
+    HTML("<p>The parallel coordinate plot below visualizes the baseline characteristics for all continuous variables in the dataset, with the placebo group shown in orange and the treatment group shown in cyan. 
     The two treatment groups are Placebo group (as orange lines) and Treatment group (as cyan lines). <p>
-         <p>(an outlier of 434 from the KLEVEL coordinate, which could have been a clerical error is removed).<p>")})
+         <p>An outlier value of 434 in the Serum Potassium (KLEVEL) variable, likely due to a data entry error, was removed to improve clarity.<p>
+         <p>This plot allows us to compare multivariate patterns between the two groups across several baseline variables, including age, sex, body mass index, serum potassium, serum creatinine, diastolic blood pressure, and systolic blood pressure, and helps reveal differences, similarities, and potential trends among the treatment groups.<p>")})
   p.df <- read.csv("DIG.csv") %>%
     janitor::clean_names() %>% 
     select(trtmt, sex, age, bmi, klevel, creat, diabp, sysbp, hyperten, cvd, whf, dig, hosp, death) %>%

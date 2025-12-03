@@ -75,9 +75,20 @@ ui <- dashboardPage(skin = "green",
                                 h3("Dataset"),
                                 dataTableOutput("digds")),
                         
-                        tabItem(tabName = "over")
+                       # for analysis 
+                         tabItem(tabName = "relation",
+                                h2("Two Variable Analysis"),
+                                varSelectInput("xvar","X variable:", dig_n.df),
+                                varSelectInput("yvar","Y variable:", dig_n.df),
+                                ),
+                        
+                        tabItem(tabName = "over",
+                        h2("Overview of the dataset"),
+                        uiOutput("over_ds"),
+                        h3("Parallel Coordinate Graph the of Baseline characteristics"),
+                        plotlyOutput("overviewPlot"))
+                      
                         
                       )
                     )
-)
 )

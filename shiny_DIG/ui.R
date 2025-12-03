@@ -74,7 +74,6 @@ ui <- dashboardPage(skin = "green",
               h3("Dataset"),
               div(style = "height:400px; overflow-y: scroll; overflow-x: scroll;", tableOutput("digds"))
       ),
-<<<<<<< HEAD
       
       tabItem(tabName = "relation",
               h2("Two Variable Analysis"),
@@ -88,11 +87,11 @@ ui <- dashboardPage(skin = "green",
       tabItem(tabName = "relation"),
       tabItem(tabName = "tables")
     )
-  )
-=======
-      tabItem(tabName = "over",
+  ),
+
+  #    tabItem(tabName = "over",
               #selectInput("variable", "Choose variable:", names(digData)),
-              plotlyOutput("overviewPlot"),
+  #           plotlyOutput("overviewPlot"),
               #tableOutput("overviewSummary"),
       
   #    # tabItem(tabName = "relation",
@@ -102,8 +101,6 @@ ui <- dashboardPage(skin = "green",
   #             tableOutput("relationshipSummary")
   #     ),
   #    # tabItem(tabName = "tables")
-     )
-   )
->>>>>>> 314e0678e3bcbb39d7c8d78ec013c3b0d80e0951
-)
+   #   )
+   # )
 )

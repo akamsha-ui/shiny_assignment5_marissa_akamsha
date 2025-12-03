@@ -21,7 +21,10 @@ dig_new.df <- dig.df %>%
   select(id, trtmt, age, sex, bmi, klevel, creat, diabp, sysbp, hyperten, cvd, whf, dig, hosp,
          hospdays, death, deathday)
 
+
 #UI page layout
+dig_n.df <- dig_new.df |> select(where(is.numeric))
+#View(dig_n.df)
 ui <- dashboardPage(
   skin = "green",
   

@@ -65,4 +65,81 @@ function(input, output, session) {
     select(id, trtmt, age, sex, bmi, klevel, creat, diabp, sysbp, hyperten, 
            cvd, whf, dig, hosp, hospdays, death, deathday)
   output$digds <- renderTable({dig_new.df}) #rendering
+  
+  output$overviewPlot <- renderPlotly({
+    
+    plot_ly(
+      data = dig_new.df,
+      type = "parcoords",
+      line = list(
+        color     = dig_new.df$trtmt,
+        colorscale = list(c(0, "#A2CD5A"), c(1, "#FF7F00")),
+        showscale = TRUE,
+        alpha     = 0.4
+      ),
+      dimensions = list(
+        list(
+          tickvals = c(0, 1),
+          ticktext = c("Placebo", "Treatment"),
+          label    = "TRTMT",
+          values   = dig_new.df$trtmt),
+        list(range  = c(min(dig_new.df$age,   na.rm = TRUE), max(dig_new.df$age,   na.rm = TRUE)), label  = "AGE", values = dig_new.df$age),
+        list(range  = c(min(dig_new.df$bmi,   na.rm = TRUE), max(dig_new.df$bmi,   na.rm = TRUE)), label  = "BMI", values = dig_new.df$bmi),
+        list(range  = c(min(dig_new.df$klevel, na.rm = TRUE), max(dig_new.df$klevel, na.rm = TRUE)), label  = "KLEVEL", values = dig_new.df$klevel),
+        list(range  = c(min(dig_new.df$creat, na.rm = TRUE), max(dig_new.df$creat, na.rm = TRUE)),
+          label  = "CREAT", values = dig_new.df$creat
+        ),
+        list(
+          range  = c(min(dig_new.df$diabp, na.rm = TRUE),
+                     max(dig_new.df$diabp, na.rm = TRUE)),
+          label  = "DIABP",
+          values = dig_new.df$diabp
+        ),
+        list(
+          range  = c(min(dig_new.df$sysbp, na.rm = TRUE),
+                     max(dig_new.df$sysbp, na.rm = TRUE)),
+          label  = "SYSBP",
+          values = dig_new.df$sysbp
+        ),
+        list(
+          tickvals = c(1, 2),
+          ticktext = c("Male", "Female"),
+          label    = "SEX",
+          values   = dig_new.df$sex
+        )
+      )
+    ) %>%
+      layout(
+        margin = list(t = 100),
+        annotations = list(
+          x = 0.5,
+          y = 1.22,
+          text = "Baseline Characteristics of Study Participants by Treatment Group",
+          showarrow = FALSE,
+          font = list(size = 15, color = "black")
+        )
+      )
+    
+  })
+  })
+  output$overviewSummary <- renderTable({
+    digData %>%
+      summarise(Mean = mean(.data[[input$variable]], na.rm = TRUE),
+                Median = median(.data[[input$variable]], na.rm = TRUE),
+                SD = sd(.data[[input$variable]], na.rm = TRUE),
+                Min = min(.data[[input$variable]], na.rm = TRUE),
+                Max = max(.data[[input$variable]], na.rm = TRUE))
+  })
+  output$relationshipPlot <- renderPlot({
+    ggplot(digData, aes_string(x=input$xvar, y=input$yvar)) +
+      geom_point() +
+      theme_minimal() +
+      labs(title=paste(input$yvar, "vs", input$xvar))
+  })
+  
+  output$relationshipSummary <- renderTable({
+    digData %>%
+      group_by(.data[[input$xvar]]) %>%
+      summarise(Mean = mean(.data[[input$yvar]], na.rm = TRUE))
+  })
 }

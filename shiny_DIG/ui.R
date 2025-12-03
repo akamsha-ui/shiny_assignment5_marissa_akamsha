@@ -3,6 +3,7 @@ library(janitor)
 library(ggplot2)
 library(shiny)
 library(shinydashboard)
+library(grDevices)
 
 # read the DIG data set (using select for the needed data set)
 # dig_new.df <- dig.df %>%
@@ -73,8 +74,18 @@ ui <- dashboardPage(
               h3("Dataset"),
               div(style = "height:400px; overflow-y: scroll; overflow-x: scroll;", tableOutput("digds"))
       ),
-      tabItem(tabName = "over"),
-      tabItem(tabName = "relation"),
+      tabItem(tabName = "over",
+              #selectInput("variable", "Choose variable:", names(digData)),
+              plotOutput("overviewPlot"),
+              #tableOutput("overviewSummary")
+              ),
+      
+      tabItem(tabName = "relation",
+              selectInput("xvar", "X Variable:", names(digData)),
+              selectInput("yvar", "Y Variable:", names(digData)),
+              plotOutput("relationshipPlot"),
+              tableOutput("relationshipSummary")
+      ),
       tabItem(tabName = "tables")
     )
   )

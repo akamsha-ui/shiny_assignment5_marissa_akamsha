@@ -3,21 +3,23 @@ library(janitor)
 library(ggplot2)
 library(shiny)
 library(shinydashboard)
+library(rsconnect)
 
 # read the DIG data set (using select for the needed data set)
-# dig_new.df <- dig.df %>%
-#   janitor::clean_names() %>% 
-#   mutate(
-#     trtmt = factor(trtmt, levels = c(0,1), labels = c("Placebo", "Treatment")),
-#     sex = factor(sex, levels = c(1,2), labels = c("Males", "Females")),
-#     hyperten = factor(hyperten, levels = c(0,1), labels = c("No","Yes")),
-#     cvd = factor(cvd, levels = c(0,1), labels = c("No","Yes")),
-#     whf = factor(whf, levels = c(0,1), labels = c("No","Yes")),
-#     dig = factor(dig, levels = c(0,1), labels = c("No","Yes")),
-#     hosp = factor(hosp, levels = c(0,1), labels = c("No","Yes")),
-#     death = factor(death, levels = c(0,1), labels = c("Alive","Death"))) %>%
-#   select(id, trtmt, age, sex, bmi, klevel, creat, diabp, sysbp, hyperten, cvd, whf, dig, hosp, 
-#          hospdays, death, deathday)
+dig.df <- read.csv("DIG.csv")
+dig_new.df <- dig.df %>%
+  janitor::clean_names() %>%
+  mutate(
+    trtmt = factor(trtmt, levels = c(0,1), labels = c("Placebo", "Treatment")),
+    sex = factor(sex, levels = c(1,2), labels = c("Males", "Females")),
+    hyperten = factor(hyperten, levels = c(0,1), labels = c("No","Yes")),
+    cvd = factor(cvd, levels = c(0,1), labels = c("No","Yes")),
+    whf = factor(whf, levels = c(0,1), labels = c("No","Yes")),
+    dig = factor(dig, levels = c(0,1), labels = c("No","Yes")),
+    hosp = factor(hosp, levels = c(0,1), labels = c("No","Yes")),
+    death = factor(death, levels = c(0,1), labels = c("Alive","Death"))) %>%
+  select(id, trtmt, age, sex, bmi, klevel, creat, diabp, sysbp, hyperten, cvd, whf, dig, hosp,
+         hospdays, death, deathday)
 
 #UI page layout
 ui <- dashboardPage(
@@ -25,7 +27,7 @@ ui <- dashboardPage(
   
   dashboardHeader(
     title = tags$span("DIG Trial Dashboard",
-                      style = "color: fuchsia; font-size: 20px; font-weight:bold;")  # fixed front-size → font-size
+                      style = "color: white; font-size: 20px; font-weight:bold;")  # fixed front-size → font-size
   ),
   
   dashboardSidebar(
@@ -38,28 +40,27 @@ ui <- dashboardPage(
   ),
   
   dashboardBody(
+    skin = "red",
     # CSS to style the sidebar menu item
     tags$head(
-      tags$style(HTML("
-        /* Style 'About the dataset' menuItem */
+      tags$style(HTML(" /*Style 'About the dataset' menuItem*/
         .sidebar-menu li a[data-value='info'] {
-          color: orange !important;       /* text color */
-          font-size: 18px !important;      /* optional font size */
-          font-weight: bold !important;    /* optional bold */
+          color: white !important;       /*text color*/
+          font-size: 18px !important;      /*font size */
+          font-weight: bold !important;    /*bold*/
         }
-      "), 
-      ("/* Style 'Overview' menuItem */
+      
+      /*Style 'Overview' menuItem*/
         .sidebar-menu li a[data-value='over'] {
-          color: orange !important;       /*text color*/
+          color: white !important;       /*text color*/
           font-size: 18px !important;      /*font size*/
-          font-weight: bold !important;    /*optional bold*/
+          font-weight: bold !important;    /*bold*/
         }
-       "),
-      ("/* Style 'Analysis for two variables' menuItem */
+      /*Style 'Analysis for two variables' menuItem*/
         .sidebar-menu li a[data-value='relation'] {
-          color: orange !important;       /*text color*/
+          color: white !important;       /*text color*/
           font-size: 18px !important;      /*font size*/
-          font-weight: bold !important;    /*optional bold*/
+          font-weight: bold !important;    /*bold*/
         }
        "))
     ),

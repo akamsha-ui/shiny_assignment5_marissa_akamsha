@@ -46,7 +46,7 @@ ui <- dashboardPage(
     skin = "red",
     # CSS to style the sidebar menu item
     tags$head(
-      tags$style(HTML(" /*Style 'About the dataset' menuItem*/
+      tags$style(HTML("/*Style 'About the dataset' menuItem*/
         .sidebar-menu li a[data-value='info'] {
           color: white !important;       /*text color*/
           font-size: 18px !important;      /*font size */
@@ -77,6 +77,15 @@ ui <- dashboardPage(
               h3("Dataset"),
               div(style = "height:400px; overflow-y: scroll; overflow-x: scroll;", tableOutput("digds"))
       ),
+      
+      tabItem(tabName = "relation",
+              h2("Two Variable Analysis"),
+              varSelectInput("xvar","X variable:", dig_n.df),
+              varSelectInput("yvar","Y variable:", dig_n.df),
+              
+              plotOutput("scatterPlot")
+      ),
+      
       tabItem(tabName = "over"),
       tabItem(tabName = "relation"),
       tabItem(tabName = "tables")

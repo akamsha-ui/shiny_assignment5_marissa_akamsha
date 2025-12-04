@@ -128,20 +128,19 @@ ui <- dashboardPage(skin = "purple",
                                     ),
                                     checkboxInput("add_smoother", "Add smoother", F)
                                   ),
-                                  # rendering scatter plot  
-                                  box(
-                                    width = 8,
-                                    plotOutput("relation_plot")
-                                  ),
-                                  
-                                  # instruction to generate the graph       
                                   box(
                                     #width = 6,
                                     h4("How to make the graph:"),
-                                    uiOutput("usergraph")
+                                    uiOutput("usergraph")),
+                                    
+                                  # rendering scatter plot  
+                                  box(
+                                    width = 8,
+                                    plotOutput("relation_plot")),
+                                  
+                                  
                                   )
                                 )
                         )
                       )
                     )
-)

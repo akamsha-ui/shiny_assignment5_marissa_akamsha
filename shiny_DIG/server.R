@@ -113,4 +113,8 @@ function(input, output, session) {
         death    %in% input$death_f
       )
   })
+  
+  # instruction on how to generate the graph       
+  output$usergraph <- renderText({HTML()})
+  
 }

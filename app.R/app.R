@@ -1,0 +1,127 @@
+library(tidyverse)
+library(janitor) 
+library(ggplot2)
+library(shiny)
+library(shinydashboard)
+library(rsconnect)
+library(plotly)
+library(bslib)
+
+# read the DIG data set (using select for the needed data set)
+dig.df <- read.csv("DIG.csv")
+dig_new.df <- dig.df %>%
+  janitor::clean_names() %>%
+  mutate(
+    trtmt = factor(trtmt, levels = c(0,1), labels = c("Placebo", "Treatment")),
+    sex = factor(sex, levels = c(1,2), labels = c("Males", "Females")),
+    hyperten = factor(hyperten, levels = c(0,1), labels = c("No","Yes")),
+    cvd = factor(cvd, levels = c(0,1), labels = c("No","Yes")),
+    whf = factor(whf, levels = c(0,1), labels = c("No","Yes")),
+    dig = factor(dig, levels = c(0,1), labels = c("No","Yes")),
+    hosp = factor(hosp, levels = c(0,1), labels = c("No","Yes")),
+    death = factor(death, levels = c(0,1), labels = c("Alive","Death"))) %>%
+  select(id, trtmt, age, sex, bmi, klevel, creat, diabp, sysbp, hyperten, cvd, whf, dig, hosp,
+         hospdays, death)
+
+
+#ui page layout
+
+dig_n.df <- dig_new.df %>% select(where(is.numeric))
+
+#View(dig_n.df)
+
+ui <- dashboardPage(skin = "purple",
+                    dashboardHeader(
+                      title = tags$span("DIG Trial Dashboard",
+                                        style = "color: forrestgreen; font-size: 20px; font-weight:bold;") # for font size and color for the dashboard 
+                    ),
+                    
+                    dashboardSidebar(
+                      sidebarMenu(
+                        menuItem("About the dataset", tabName = "info"),
+                        menuItem("Overview", tabName = "over"),
+                        menuItem("Analysis for two variables", tabName = "relation"))),
+                    
+                    dashboardBody(
+                      
+                      # CSS(cascading style sheet) to style the sidebar menu item
+                      
+                      tags$head(
+                        
+                        # customize the menu item(information, overview, relation) for text color and font size
+                        
+                        tags$style(HTML("
+                        
+                        .sidebar-menu li a[data-value='info'] {color: lightgreen;font-size: 18px;font-weight: bold;}
+                        .sidebar-menu li a[data-value='over'] {color: peach;font-size: 18px;font-weight: bold;}
+                        .sidebar-menu li a[data-value='relation'] {color: peach;font-size: 18px;font-weight: bold;}
+                        .tab-content h2 {color: darkmagenta;font-size: 28px;font-weight: bold;}
+                        .tab-content h3 {color: indigo;font-size: 25px;}")
+                        )
+                      ),
+                      
+                      
+                      #for the main page 
+                      
+                      tabItems(
+                        tabItem(tabName = "info",
+                                fluidRow(box(
+                                  h2("About the Trial"),
+                                  uiOutput("info_para")),
+                                  box(
+                                    h3("Legends of the dataset"),
+                                    dataTableOutput("legends")),
+                                  box(
+                                    h3("Dataset"),
+                                    style = "height:400px; overflow-y: scroll; overflow-x: scroll;",
+                                    dataTableOutput("digds"),
+                                    width = 12))),
+                        
+                        
+                        #for overview 
+                        
+                        tabItem(tabName = "over",
+                                fluidRow(box(
+                                  h2("Overview of the dataset"),
+                                  uiOutput("over_ds"),
+                                  width =12),
+                                  box(h3("Parallel Coordinate Graph the of Baseline characteristics"),
+                                      plotlyOutput("overviewPlot"),
+                                      width = 12))),
+                        
+                        
+                        # for analysis 
+                        
+                        tabItem(tabName = "relation",
+                                h2("Two Variable Analysis"),
+                                varSelectInput("xvar","X axis variable:", dig_n.df),
+                                varSelectInput("yvar","Y axis variable:", dig_n.df),
+                                checkboxGroupInput(
+                                  "trtmt","Treatment",
+                                  choices = levels(dig_n.df$trtmt),
+                                  selected = levels(dig_n.df$trtmt)
+                                ),
+                                page_fillable(
+                                  layout_columns(
+                                    card("Card 1"), 
+                                    card( 
+                                      "Card 2", 
+                                      layout_columns( 
+                                        card("Card 2.1"), 
+                                        card("Card 2.2") 
+                                      ) 
+                                    ), 
+                                    col_widths = c(4, 8)   
+                                  )
+                                )
+                                # plotOutput("scatter")
+                                
+                                
+                        )
+                      )
+                    )
+)
+
+
+
+shinyApp(ui = ui, server = server)

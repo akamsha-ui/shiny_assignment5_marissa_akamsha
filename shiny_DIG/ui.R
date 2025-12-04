@@ -6,10 +6,10 @@ library(shinydashboard)
 library(rsconnect)
 library(plotly)
 library(bslib)
+library(ggExtra)
 
 # read the DIG data set (using select for the needed data set)
-dig.df <- read.csv("DIG.csv")
-dig_new.df <- dig.df %>%
+dig.df <- read.csv("DIG.csv") %>%
   janitor::clean_names() %>%
   mutate(
     trtmt = factor(trtmt, levels = c(0,1), labels = c("Placebo", "Treatment")),
@@ -24,18 +24,16 @@ dig_new.df <- dig.df %>%
          hospdays, death)
 
 
-#ui page layout
-
-dig_n.df <- dig_new.df %>% select(where(is.numeric))
+# Select numeric columns for variable selection dropdowns
+dig_n.df <- dig.df %>% select(where(is.numeric))
+num_vars <- names(dig_n.df)
 
 #View(dig_n.df)
 
 ui <- dashboardPage(skin = "purple",
                     dashboardHeader(
                       title = tags$span("DIG Trial Dashboard",
-                                        style = "color: white; font-size: 20px; font-weight:bold;") # for font size and color for the dashboard 
-                      ),
-                    
+                                        style = "color: forrestgreen; font-size: 20px; font-weight:bold;")),# for font size and color for the dashboard
                     dashboardSidebar(
                       sidebarMenu(
                         menuItem("About the dataset", tabName = "info"),
@@ -43,26 +41,18 @@ ui <- dashboardPage(skin = "purple",
                         menuItem("Analysis for two variables", tabName = "relation"))),
                     
                     dashboardBody(
-                      
                       # CSS(cascading style sheet) to style the sidebar menu item
-                      
                       tags$head(
-                        
-                        # customize the menu item(information, overview, relation) for text color and font size
-                        
+                      # to customize the menu item(information, overview, relation) for text color and font size
                         tags$style(HTML("
-                        
                         .sidebar-menu li a[data-value='info'] {color: white;font-size: 18px;font-weight: bold;}
                         .sidebar-menu li a[data-value='over'] {color: white;font-size: 18px;font-weight: bold;}
                         .sidebar-menu li a[data-value='relation'] {color: white;font-size: 18px;font-weight: bold;}
                         .tab-content h2 {color: darkmagenta;font-size: 28px;font-weight: bold;}
                         .tab-content h3 {color: indigo;font-size: 25px;}")
-                                   )
-        ),
-       
+                                   )),
         
         #for the main page 
-        
         tabItems(
           tabItem(tabName = "info",
                   fluidRow(box(
@@ -77,9 +67,7 @@ ui <- dashboardPage(skin = "purple",
                   dataTableOutput("digds"),
                   width = 12))),
          
-         
           #for overview 
-          
           tabItem(tabName = "over",
                   fluidRow(box(
                   h2("Overview of the dataset"),
@@ -88,23 +76,58 @@ ui <- dashboardPage(skin = "purple",
                   box(h3("Parallel Coordinate Graph the of Baseline characteristics"),
                   plotlyOutput("overviewPlot"),
                   width = 12))),
-         
-          
-          # for analysis 
-           
+
+          # for analysis tab 
           tabItem(tabName = "relation",
                   h2("Two Variable Analysis"),
-                  varSelectInput("xvar","X axis variable:", dig_n.df),
-                  varSelectInput("yvar","Y axis variable:", dig_n.df),
-          checkboxGroupInput(
-            "trtmt","Treatment",
-            choices = levels(dig_n.df$trtmt),
-            selected = levels(dig_n.df$trtmt)
-          ),
-         # plotOutput("scatter")
-        
-         
+                  fluidPage(
+                    box(
+                      width = 4,
+                      varSelectInput("xvar","X variable:", dig_n.df[, c("age","bmi","klevel","creat","diabp","sysbp")]),
+                      varSelectInput("yvar","Y variable:", dig_n.df[, c("age","bmi","klevel","creat","diabp","sysbp")]),
+            
+            #check box  Treatment, Sex, Hypertension, CVD, Worsening HF, Digoxin toxicity, Any hospitalization, Death
+                      fluidRow(
+                        column(
+                          width = 6,
+                          checkboxGroupInput("trtmt_f","Treatment", choices = levels(dig.df$trtmt), selected = levels(dig.df$trtmt)),
+                          checkboxGroupInput("sex_f","Sex", choices = levels(dig.df$sex), selected = levels(dig.df$sex)),
+                          checkboxGroupInput("hyperten_f","Hypertension", choices = levels(dig.df$hyperten), selected = levels(dig.df$hyperten)),
+                          checkboxGroupInput("cvd_f","CVD", choices = levels(dig.df$cvd), selected = levels(dig.df$cvd))),
+                        column(
+                          width = 6,
+                          checkboxGroupInput("whf_f","Worsening HF", choices = levels(dig.df$whf), selected = levels(dig.df$whf)),
+                          checkboxGroupInput("dig_f","Digoxin toxicity", choices = levels(dig.df$dig), selected = levels(dig.df$dig)),
+                          checkboxGroupInput("hosp_f","Any hospitalization", choices = levels(dig.df$hosp), selected = levels(dig.df$hosp)),
+                          checkboxGroupInput("death_f","Death", choices = levels(dig.df$death), selected = levels(dig.df$death))
+                        )),
+             
+            #other parameters that include for addition of histogram or density garph on the margin          
+                      hr(),
+                      h4("Other Parameters"),
+                      checkboxInput("show_margins", "Show marginal plots", T),
+                      radioButtons(
+                        "margin_type", "Marginal plot type",
+                        choices = c("Histogram" = "histogram", "Density" = "density"),
+                        selected = "histogram",
+                        inline = T
+                      ),
+                      checkboxInput("add_smoother", "Add smoother", F)
+                    ),
+            # rendering scatter plot  
+                    box(
+                      width = 8,
+                      plotOutput("relation_plot")
+                    ),
+            
+            # instruction to generate the graph       
+                    box(
+                      #width = 6,
+                      h4("How to make the graph:"),
+                      uiOutput("usergraph")
+          )
+        )
+      )
     )
   )
-)
 )

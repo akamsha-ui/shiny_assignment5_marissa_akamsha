@@ -15,7 +15,7 @@ library(plotly)
 #server code
 function(input, output, session) {
   ##About the dataset page
-  output$info_para <- renderText({
+  output$info_para <- renderUI({
     HTML("<p>The DIG (Digitalis Investigation Group) Trial was a randomized, double-blind, 
          multicenter trial with more than 300 centers in the United States and Canada participating. 
          The purpose of the trial was to examine the safety and efficacy of Digoxin in treating patients 

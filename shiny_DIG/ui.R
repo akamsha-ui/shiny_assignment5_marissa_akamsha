@@ -23,15 +23,16 @@ dig_new.df <- dig.df %>%
          hospdays, death, deathday)
 
 
-#UI page layout
+#ui page layout
 
 dig_n.df <- dig_new.df %>% select(where(is.numeric))
 
 #View(dig_n.df)
+
 ui <- dashboardPage(skin = "green",
                     dashboardHeader(
                       title = tags$span("DIG Trial Dashboard",
-                                        style = "color: white; font-size: 20px; font-weight:bold;")  
+                                        style = "color: white; font-size: 20px; font-weight:bold;") # for font size and color for the dashboard 
                       ),
                     
                     dashboardSidebar(
@@ -41,31 +42,23 @@ ui <- dashboardPage(skin = "green",
                         menuItem("Analysis for two variables", tabName = "relation"))),
                     
                     dashboardBody(
-                      skin = "red",
-                      # CSS to style the sidebar menu item
+                      
+                      # CSS(cascading style sheet) to style the sidebar menu item
+                      
                       tags$head(
-                        tags$style(HTML("/*Style 'About the dataset' menuItem*/
-        .sidebar-menu li a[data-value='info'] {
-          color: white !important;       /*text color*/
-          font-size: 18px !important;      /*font size */
-          font-weight: bold !important;    /*bold*/
-        }
-      
-      /*Style 'Overview' menuItem*/
-        .sidebar-menu li a[data-value='over'] {
-          color: white !important;       /*text color*/
-          font-size: 18px !important;      /*font size*/
-          font-weight: bold !important;    /*bold*/
-        }
-      /*Style 'Analysis for two variables' menuItem*/
-        .sidebar-menu li a[data-value='relation'] {
-          color: white !important;       /*text color*/
-          font-size: 18px !important;      /*font size*/
-          font-weight: bold !important;    /*bold*/
-        }
-       "))
+                        
+                        # customize the menu item(information, overview, relation) for text color and font size
+                        
+                        tags$style(HTML("
+                        
+                        .sidebar-menu li a[data-value='info'] {color: white;font-size: 18px;font-weight: bold;}
+                        .sidebar-menu li a[data-value='over'] {color: white;font-size: 18px;font-weight: bold;}
+                        .sidebar-menu li a[data-value='relation'] {color: white;font-size: 18px;font-weight: bold;}")
+                                   )
         ),
-        #for the tab
+        
+        #for the main page 
+        
         tabItems(
           tabItem(tabName = "info",
                   h2("About the Trial"),
@@ -76,6 +69,7 @@ ui <- dashboardPage(skin = "green",
                   dataTableOutput("digds")),
          
           #for overview 
+          
           tabItem(tabName = "over",
                   h2("Overview of the dataset"),
                   uiOutput("over_ds"),
@@ -83,7 +77,8 @@ ui <- dashboardPage(skin = "green",
                   plotlyOutput("overviewPlot")),
          
           # for analysis 
-           tabItem(tabName = "relation",
+           
+          tabItem(tabName = "relation",
                   h2("Two Variable Analysis"),
                   varSelectInput("xvar","X axis variable:", dig_n.df),
                   varSelectInput("yvar","Y axis variable:", dig_n.df),

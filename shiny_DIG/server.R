@@ -63,12 +63,8 @@ function(input, output, session) {
       hosp = factor(hosp, levels = c(0,1), labels = c("No","Yes")),
       death = factor(death, levels = c(0,1), labels = c("Alive","Death"))) %>%
     select(id, trtmt, age, sex, bmi, klevel, creat, diabp, sysbp, hyperten, 
-<<<<<<< HEAD
-           cvd, whf, dig, hosp, hospdays, death)
-=======
            cvd, whf, dig, hosp, hospdays, death, deathday)
   
->>>>>>> ce560bd6080f45a4b937f49b6ba9bc0db5d53707
   output$digds <- renderDataTable({dig.df}) #rendering
   
   ##overview page
@@ -99,7 +95,4 @@ function(input, output, session) {
       list(range  = c(min(p.df$sysbp, na.rm = TRUE), max(p.df$sysbp, na.rm = TRUE)), label  = "Systolic BP", values = p.df$sysbp),
       list(tickvals = c(1, 2), ticktext = c("Male", "Female"), label    = "Sex", values   = p.df$sex)))
   output$overviewPlot <- renderPlotly({ggplotly(p)}) #rendering
-  
-  ##analysis for two variables
-  
 }

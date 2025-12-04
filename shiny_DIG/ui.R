@@ -24,12 +24,8 @@ dig_new.df <- dig.df %>%
          hospdays, death)
 
 
-<<<<<<< HEAD
-#UI page layout
-=======
 #ui page layout
 
->>>>>>> ce560bd6080f45a4b937f49b6ba9bc0db5d53707
 dig_n.df <- dig_new.df %>% select(where(is.numeric))
 
 #View(dig_n.df)
@@ -38,7 +34,7 @@ ui <- dashboardPage(skin = "purple",
                     dashboardHeader(
                       title = tags$span("DIG Trial Dashboard",
                                         style = "color: white; font-size: 20px; font-weight:bold;") # for font size and color for the dashboard 
-                      ),
+                    ),
                     
                     dashboardSidebar(
                       sidebarMenu(
@@ -61,61 +57,54 @@ ui <- dashboardPage(skin = "purple",
                         .sidebar-menu li a[data-value='relation'] {color: white;font-size: 18px;font-weight: bold;}
                         .tab-content h2 {color: darkmagenta;font-size: 28px;font-weight: bold;}
                         .tab-content h3 {color: indigo;font-size: 25px;}")
-                                   )
-        ),
-       
-        
-        #for the main page 
-        
-        tabItems(
-          tabItem(tabName = "info",
-                  fluidRow(box(
-                  h2("About the Trial"),
-                  uiOutput("info_para")),
-                  box(
-                    h3("Legends of the dataset"),
-                  dataTableOutput("legends")),
-                  box(
-                    h3("Dataset"),
-                    style = "height:400px; overflow-y: scroll; overflow-x: scroll;",
-                  dataTableOutput("digds"),
-                  width = 12))),
-         
-         
-          #for overview 
-          
-          tabItem(tabName = "over",
-<<<<<<< HEAD
-                  h2("Overview of the dataset"),
-                  uiOutput("over_ds"),
-                  h3("Parallel Coordinate Graph the of Baseline characteristics"),
-                  plotlyOutput("overviewPlot"))
-=======
-                  fluidRow(box(
-                  h2("Overview of the dataset"),
-                  uiOutput("over_ds"),
-                  width =12),
-                  box(h3("Parallel Coordinate Graph the of Baseline characteristics"),
-                  plotlyOutput("overviewPlot"),
-                  width = 12))),
-         
-          
-          # for analysis 
-           
-          tabItem(tabName = "relation",
-                  h2("Two Variable Analysis"),
-                  varSelectInput("xvar","X axis variable:", dig_n.df),
-                  varSelectInput("yvar","Y axis variable:", dig_n.df),
-          checkboxGroupInput(
-            "trtmt","Treatment",
-            choices = levels(dig_n.df$trtmt),
-            selected = levels(dig_n.df$trtmt)
-          ),
-         # plotOutput("scatter")
-        
-         
->>>>>>> ce560bd6080f45a4b937f49b6ba9bc0db5d53707
+                        )
+                      ),
+                      
+                      
+                      #for the main page 
+                      
+                      tabItems(
+                        tabItem(tabName = "info",
+                                fluidRow(box(
+                                  h2("About the Trial"),
+                                  uiOutput("info_para")),
+                                  box(
+                                    h3("Legends of the dataset"),
+                                    dataTableOutput("legends")),
+                                  box(
+                                    h3("Dataset"),
+                                    style = "height:400px; overflow-y: scroll; overflow-x: scroll;",
+                                    dataTableOutput("digds"),
+                                    width = 12))),
+                        
+                        
+                        #for overview 
+                        
+                        tabItem(tabName = "over",
+                                fluidRow(box(
+                                  h2("Overview of the dataset"),
+                                  uiOutput("over_ds"),
+                                  width =12),
+                                  box(h3("Parallel Coordinate Graph the of Baseline characteristics"),
+                                      plotlyOutput("overviewPlot"),
+                                      width = 12))),
+                        
+                        
+                        # for analysis 
+                        
+                        tabItem(tabName = "relation",
+                                h2("Two Variable Analysis"),
+                                varSelectInput("xvar","X axis variable:", dig_n.df),
+                                varSelectInput("yvar","Y axis variable:", dig_n.df),
+                                checkboxGroupInput(
+                                  "trtmt","Treatment",
+                                  choices = levels(dig_n.df$trtmt),
+                                  selected = levels(dig_n.df$trtmt)
+                                ),
+                                # plotOutput("scatter")
+                                
+                                
+      )
     )
   )
-)
 )

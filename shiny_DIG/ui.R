@@ -136,9 +136,7 @@ ui <- dashboardPage(skin = "purple",
                                   # rendering scatter plot  
                                   box(
                                     width = 8,
-                                    plotOutput("relation_plot")),
-                                  
-                                  
+                                    plotOutput("relation_plot"))
                                   )
                                 )
                         )

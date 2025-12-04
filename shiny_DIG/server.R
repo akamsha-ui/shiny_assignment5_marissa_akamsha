@@ -115,7 +115,6 @@ function(input, output, session) {
   })
   
   # instruction on how to generate the graph       
-<<<<<<< HEAD
   output$usergraph <- renderText({
   HTML("<p>A scatter plot is ideal for showing the relationship between two continuous variables.<p> 
          <p>For example, if you set Age on the X-axis and BMI on the Y-axis (both continuous variables), 
@@ -126,9 +125,6 @@ function(input, output, session) {
          <p>You can further enhance your visualization by adding additional parameters such as 
          marginal plots (here, histograms or density plots) and a trend line to provide deeper insights into the data.<p>")})
   
-}
-=======
-  output$usergraph <- renderText({HTML()})
   # Plot rendering
   output$relation_plot <- renderPlot({
     req(input$xvar, input$yvar)
@@ -161,4 +157,3 @@ function(input, output, session) {
     p
   }, res = 100)
 }
->>>>>>> 9c365409d096dcb200b39e3368806b4221ebe6a0

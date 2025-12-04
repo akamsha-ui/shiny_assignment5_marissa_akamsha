@@ -24,12 +24,14 @@ dig_new.df <- dig.df %>%
 
 
 #UI page layout
-dig_n.df <- dig_new.df |> select(where(is.numeric))
+
+dig_n.df <- dig_new.df %>% select(where(is.numeric))
+
 #View(dig_n.df)
 ui <- dashboardPage(skin = "green",
                     dashboardHeader(
                       title = tags$span("DIG Trial Dashboard",
-                                        style = "color: white; font-size: 20px; font-weight:bold;")  # fixed front-size -> font-size
+                                        style = "color: white; font-size: 20px; font-weight:bold;")  
                       ),
                     
                     dashboardSidebar(
@@ -63,7 +65,7 @@ ui <- dashboardPage(skin = "green",
         }
        "))
         ),
-        
+        #for the tab
         tabItems(
           tabItem(tabName = "info",
                   h2("About the Trial"),
@@ -72,19 +74,21 @@ ui <- dashboardPage(skin = "green",
                   dataTableOutput("legends"),
                   h3("Dataset"),
                   dataTableOutput("digds")),
-          
-         # for analysis 
+         
+          #for overview 
+          tabItem(tabName = "over",
+                  h2("Overview of the dataset"),
+                  uiOutput("over_ds"),
+                  h3("Parallel Coordinate Graph the of Baseline characteristics"),
+                  plotlyOutput("overviewPlot")),
+         
+          # for analysis 
            tabItem(tabName = "relation",
                   h2("Two Variable Analysis"),
-                  varSelectInput("xvar","X variable:", dig_n.df),
-                  varSelectInput("yvar","Y variable:", dig_n.df),
-                  ),
-          
-          tabItem(tabName = "over",
-          h2("Overview of the dataset"),
-          uiOutput("over_ds"),
-          h3("Parallel Coordinate Graph the of Baseline characteristics"),
-          plotlyOutput("overviewPlot"))
+                  varSelectInput("xvar","X axis variable:", dig_n.df),
+                  varSelectInput("yvar","Y axis variable:", dig_n.df),
+                  )
+         
     )
   )
 )

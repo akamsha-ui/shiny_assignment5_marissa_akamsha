@@ -5,6 +5,7 @@ library(shiny)
 library(shinydashboard)
 library(rsconnect)
 library(plotly)
+library(bslib)
 
 # read the DIG data set (using select for the needed data set)
 dig.df <- read.csv("DIG.csv")
@@ -20,17 +21,23 @@ dig_new.df <- dig.df %>%
     hosp = factor(hosp, levels = c(0,1), labels = c("No","Yes")),
     death = factor(death, levels = c(0,1), labels = c("Alive","Death"))) %>%
   select(id, trtmt, age, sex, bmi, klevel, creat, diabp, sysbp, hyperten, cvd, whf, dig, hosp,
-         hospdays, death, deathday)
+         hospdays, death)
 
 
+<<<<<<< HEAD
 #UI page layout
+=======
+#ui page layout
+
+>>>>>>> ce560bd6080f45a4b937f49b6ba9bc0db5d53707
 dig_n.df <- dig_new.df %>% select(where(is.numeric))
 
 #View(dig_n.df)
-ui <- dashboardPage(skin = "green",
+
+ui <- dashboardPage(skin = "purple",
                     dashboardHeader(
                       title = tags$span("DIG Trial Dashboard",
-                                        style = "color: white; font-size: 20px; font-weight:bold;")  # fixed front-size -> font-size
+                                        style = "color: white; font-size: 20px; font-weight:bold;") # for font size and color for the dashboard 
                       ),
                     
                     dashboardSidebar(
@@ -40,52 +47,75 @@ ui <- dashboardPage(skin = "green",
                         menuItem("Analysis for two variables", tabName = "relation"))),
                     
                     dashboardBody(
-                      skin = "red",
-                      # CSS to style the sidebar menu item
+                      
+                      # CSS(cascading style sheet) to style the sidebar menu item
+                      
                       tags$head(
-                        tags$style(HTML(" /*Style 'About the dataset' menuItem*/
-        .sidebar-menu li a[data-value='info'] {
-          color: white !important;       /*text color*/
-          font-size: 18px !important;      /*font size */
-          font-weight: bold !important;    /*bold*/
-        }
-      
-      /*Style 'Overview' menuItem*/
-        .sidebar-menu li a[data-value='over'] {
-          color: white !important;       /*text color*/
-          font-size: 18px !important;      /*font size*/
-          font-weight: bold !important;    /*bold*/
-        }
-      /*Style 'Analysis for two variables' menuItem*/
-        .sidebar-menu li a[data-value='relation'] {
-          color: white !important;       /*text color*/
-          font-size: 18px !important;      /*font size*/
-          font-weight: bold !important;    /*bold*/
-        }
-       "))
+                        
+                        # customize the menu item(information, overview, relation) for text color and font size
+                        
+                        tags$style(HTML("
+                        
+                        .sidebar-menu li a[data-value='info'] {color: white;font-size: 18px;font-weight: bold;}
+                        .sidebar-menu li a[data-value='over'] {color: white;font-size: 18px;font-weight: bold;}
+                        .sidebar-menu li a[data-value='relation'] {color: white;font-size: 18px;font-weight: bold;}
+                        .tab-content h2 {color: darkmagenta;font-size: 28px;font-weight: bold;}
+                        .tab-content h3 {color: indigo;font-size: 25px;}")
+                                   )
         ),
+       
+        
+        #for the main page 
         
         tabItems(
           tabItem(tabName = "info",
+                  fluidRow(box(
                   h2("About the Trial"),
-                  uiOutput("info_para"),
-                  h3("Legends of the dataset"),
-                  dataTableOutput("legends"),
-                  h3("Dataset"),
-                  dataTableOutput("digds")),
-          
-         # for analysis 
-           tabItem(tabName = "relation",
-                  h2("Two Variable Analysis"),
-                  varSelectInput("xvar","X variable:", dig_n.df),
-                  varSelectInput("yvar","Y variable:", dig_n.df),
-                  ),
+                  uiOutput("info_para")),
+                  box(
+                    h3("Legends of the dataset"),
+                  dataTableOutput("legends")),
+                  box(
+                    h3("Dataset"),
+                    style = "height:400px; overflow-y: scroll; overflow-x: scroll;",
+                  dataTableOutput("digds"),
+                  width = 12))),
+         
+         
+          #for overview 
           
           tabItem(tabName = "over",
+<<<<<<< HEAD
                   h2("Overview of the dataset"),
                   uiOutput("over_ds"),
                   h3("Parallel Coordinate Graph the of Baseline characteristics"),
                   plotlyOutput("overviewPlot"))
+=======
+                  fluidRow(box(
+                  h2("Overview of the dataset"),
+                  uiOutput("over_ds"),
+                  width =12),
+                  box(h3("Parallel Coordinate Graph the of Baseline characteristics"),
+                  plotlyOutput("overviewPlot"),
+                  width = 12))),
+         
+          
+          # for analysis 
+           
+          tabItem(tabName = "relation",
+                  h2("Two Variable Analysis"),
+                  varSelectInput("xvar","X axis variable:", dig_n.df),
+                  varSelectInput("yvar","Y axis variable:", dig_n.df),
+          checkboxGroupInput(
+            "trtmt","Treatment",
+            choices = levels(dig_n.df$trtmt),
+            selected = levels(dig_n.df$trtmt)
+          ),
+         # plotOutput("scatter")
+        
+         
+>>>>>>> ce560bd6080f45a4b937f49b6ba9bc0db5d53707
     )
   )
+)
 )

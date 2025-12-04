@@ -15,7 +15,7 @@ library(plotly)
 #server code
 function(input, output, session) {
   ##About the dataset page
-  output$info_para <- renderText({
+  output$info_para <- renderUI({
     HTML("<p>The DIG (Digitalis Investigation Group) Trial was a randomized, double-blind, 
          multicenter trial with more than 300 centers in the United States and Canada participating. 
          The purpose of the trial was to examine the safety and efficacy of Digoxin in treating patients 
@@ -63,7 +63,12 @@ function(input, output, session) {
       hosp = factor(hosp, levels = c(0,1), labels = c("No","Yes")),
       death = factor(death, levels = c(0,1), labels = c("Alive","Death"))) %>%
     select(id, trtmt, age, sex, bmi, klevel, creat, diabp, sysbp, hyperten, 
+<<<<<<< HEAD
            cvd, whf, dig, hosp, hospdays, death)
+=======
+           cvd, whf, dig, hosp, hospdays, death, deathday)
+  
+>>>>>>> ce560bd6080f45a4b937f49b6ba9bc0db5d53707
   output$digds <- renderDataTable({dig.df}) #rendering
   
   ##overview page

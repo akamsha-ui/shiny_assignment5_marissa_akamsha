@@ -85,10 +85,16 @@ ui <- dashboardPage(skin = "purple",
           tabItem(tabName = "relation",
                   h2("Two Variable Analysis"),
                   varSelectInput("xvar","X axis variable:", dig_n.df),
-                  varSelectInput("yvar","Y axis variable:", dig_n.df)
-                  )
+                  varSelectInput("yvar","Y axis variable:", dig_n.df),
+          checkboxGroupInput(
+            "trtmt","Treatment",
+            choices = levels(dig_n.df$trtmt),
+            selected = levels(dig_n.df$trtmt)
+          ),
+          plotOutput("scatter")
+        
          
     )
   )
 )
-
+)

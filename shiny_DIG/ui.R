@@ -24,7 +24,8 @@ dig_new.df <- dig.df %>%
 
 
 #UI page layout
-dig_n.df <- dig_new.df |> select(where(is.numeric))
+dig_n.df <- dig_new.df %>% select(where(is.numeric))
+
 #View(dig_n.df)
 ui <- dashboardPage(skin = "green",
                     dashboardHeader(
@@ -81,10 +82,10 @@ ui <- dashboardPage(skin = "green",
                   ),
           
           tabItem(tabName = "over",
-          h2("Overview of the dataset"),
-          uiOutput("over_ds"),
-          h3("Parallel Coordinate Graph the of Baseline characteristics"),
-          plotlyOutput("overviewPlot"))
+                  h2("Overview of the dataset"),
+                  uiOutput("over_ds"),
+                  h3("Parallel Coordinate Graph the of Baseline characteristics"),
+                  plotlyOutput("overviewPlot"))
     )
   )
 )

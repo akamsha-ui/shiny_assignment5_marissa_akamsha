@@ -5,6 +5,7 @@ library(shiny)
 library(shinydashboard)
 library(rsconnect)
 library(plotly)
+library(bslib)
 
 # read the DIG data set (using select for the needed data set)
 dig.df <- read.csv("DIG.csv")
@@ -64,22 +65,31 @@ ui <- dashboardPage(skin = "purple",
         
         tabItems(
           tabItem(tabName = "info",
+                  fluidRow(box(
                   h2("About the Trial"),
-                  uiOutput("info_para"),
-                  h3("Legends of the dataset"),
-                  dataTableOutput("legends"),
-                  h3("Dataset"),
-                  dataTableOutput("digds")),
+                  uiOutput("info_para")),
+                  box(
+                    h3("Legends of the dataset"),
+                  dataTableOutput("legends")),
+                  box(
+                    h3("Dataset"),
+                    style = "height:400px; overflow-y: scroll; overflow-x: scroll;",
+                  dataTableOutput("digds"),
+                  width = 12))),
          
          
           #for overview 
           
           tabItem(tabName = "over",
+                  fluidRow(box(
                   h2("Overview of the dataset"),
                   uiOutput("over_ds"),
-                  h3("Parallel Coordinate Graph the of Baseline characteristics"),
-                  plotlyOutput("overviewPlot")),
+                  width =12),
+                  box(h3("Parallel Coordinate Graph the of Baseline characteristics"),
+                  plotlyOutput("overviewPlot"),
+                  width = 12))),
          
+          
           # for analysis 
            
           tabItem(tabName = "relation",
@@ -91,7 +101,7 @@ ui <- dashboardPage(skin = "purple",
             choices = levels(dig_n.df$trtmt),
             selected = levels(dig_n.df$trtmt)
           ),
-          plotOutput("scatter")
+         # plotOutput("scatter")
         
          
     )

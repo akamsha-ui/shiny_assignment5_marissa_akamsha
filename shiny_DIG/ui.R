@@ -52,7 +52,7 @@ ui <- dashboardPage(skin = "purple",
                       sidebarMenu(
                         menuItem("About the dataset", tabName = "info"),
                         menuItem("Overview", tabName = "over"),
-                        menuItem("Analysis for two variables", tabName = "relation"))),
+                        menuItem("Analysis of the Data", tabName = "relation"))),
                     
                     dashboardBody(
                       # CSS(cascading style sheet) to style the sidebar menu item
@@ -63,7 +63,8 @@ ui <- dashboardPage(skin = "purple",
                         .sidebar-menu li a[data-value='over'] {color: white;font-size: 18px;font-weight: bold;}
                         .sidebar-menu li a[data-value='relation'] {color: white;font-size: 18px;font-weight: bold;}
                         .tab-content h2 {color: darkmagenta;font-size: 28px;font-weight: bold;}
-                        .tab-content h3 {color: indigo;font-size: 25px;}")
+                        .tab-content h3 {color: indigo;font-size: 25px;}
+                        .tab-content h4 {color: indigo;font-size: 22px;}")
                         )),
                       
                       #for the main page 
@@ -93,14 +94,16 @@ ui <- dashboardPage(skin = "purple",
                         
                         # for analysis tab 
                         tabItem(tabName = "relation",
-                                h2("Two Variable Analysis"),
+                                h2("Multiple Variable Analysis"),
                                 fluidPage(
                                   box(
+                                    h4("Continous variables"),
                                     width = 4,
-                                    varSelectInput("xvar","X variable:", dig_n.df[, c("age","bmi","klevel","creat","diabp","sysbp")]),
-                                    varSelectInput("yvar","Y variable:", dig_n.df[, c("age","bmi","klevel","creat","diabp","sysbp")]),
+                                    varSelectInput("xvar","X variable:", dig_n.df[, c("age","bmi","klevel","creat","diabp","sysbp")], selected = "age"),
+                                    varSelectInput("yvar","Y variable:", dig_n.df[, c("age","bmi","klevel","creat","diabp","sysbp")], selected = "bmi"),
                                     
                                     #check box  Treatment, Sex, Hypertension, CVD, Worsening HF, Digoxin toxicity, Any hospitalization, Death
+                                    h4("Discrete variables"),
                                     fluidRow(
                                       column(
                                         width = 6,

@@ -115,6 +115,7 @@ function(input, output, session) {
   })
   
   # instruction on how to generate the graph       
+<<<<<<< HEAD
   output$usergraph <- renderText({
   HTML("<p>A scatter plot is ideal for showing the relationship between two continuous variables.<p> 
          <p>For example, if you set Age on the X-axis and BMI on the Y-axis (both continuous variables), 
@@ -126,3 +127,38 @@ function(input, output, session) {
          marginal plots (here, histograms or density plots) and a trend line to provide deeper insights into the data.<p>")})
   
 }
+=======
+  output$usergraph <- renderText({HTML()})
+  # Plot rendering
+  output$relation_plot <- renderPlot({
+    req(input$xvar, input$yvar)
+    df <- dig_filtered()
+    
+    p <- ggplot(df, aes(x = !!input$xvar, y = !!input$yvar, color = trtmt)) +
+      geom_point(alpha = 0.7) +
+      theme_minimal() +
+      labs(title = paste("Graph of", as_label(input$yvar), "vs", as_label(input$xvar)),
+        x = as_label(input$xvar),
+        y = as_label(input$yvar),
+        color = "Treatment") +
+      theme(plot.title = element_text(hjust = 0.5),
+            legend.position = "bottom")
+    
+    if (isTRUE(input$add_smoother)) {
+      p <- p + geom_smooth(se = T)   
+    }
+    
+    if (isTRUE(input$show_margins)) {
+      p <- ggExtra::ggMarginal(
+        p,
+        type = input$margin_type,
+        margins = "both",
+        size = 8,
+        groupColour = TRUE,
+        groupFill = TRUE
+      )
+    }
+    p
+  }, res = 100)
+}
+>>>>>>> 9c365409d096dcb200b39e3368806b4221ebe6a0

@@ -5,7 +5,7 @@ account: lfh4w1-akamsha-kurian
 server: shinyapps.io
 hostUrl: https://api.shinyapps.io/v1
 appId: 16225348
-bundleId: 11272240
+bundleId: 11274108
 url: https://lfh4w1-akamsha-kurian.shinyapps.io/shiny_DIG/
 version: 1
 asMultiple: FALSE

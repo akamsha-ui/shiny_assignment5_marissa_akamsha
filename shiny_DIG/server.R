@@ -115,6 +115,14 @@ function(input, output, session) {
   })
   
   # instruction on how to generate the graph       
-  output$usergraph <- renderText({HTML()})
+  output$usergraph <- renderText({
+  HTML("<p>A scatter plot is ideal for showing the relationship between two continuous variables.<p> 
+         <p>For example, if you set Age on the X-axis and BMI on the Y-axis (both continuous variables), 
+         the scatter plot will display how BMI values vary across different ages, helping you identify 
+         patterns, trends, or potential correlations between the two variables.<p>
+         <p>Additionally, selecting the relevant discrete variables (using the discrete variable checkbox) 
+         allows you to filter the data more effectively and customize the graph output according to your specific needs.<p>
+         <p>You can further enhance your visualization by adding additional parameters such as 
+         marginal plots (here, histograms or density plots) and a trend line to provide deeper insights into the data.<p>")})
   
 }

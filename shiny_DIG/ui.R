@@ -129,7 +129,7 @@ ui <- dashboardPage(skin = "purple",
                                     checkboxInput("add_smoother", "Add smoother", F)
                                   ),
                                   box(
-                                    #width = 6,
+                                    width = 8,
                                     h4("How to make the graph:"),
                                     uiOutput("usergraph")),
                                     

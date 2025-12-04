@@ -28,8 +28,22 @@ dig.df <- read.csv("DIG.csv") %>%
 dig_n.df <- dig.df %>% select(where(is.numeric))
 num_vars <- names(dig_n.df)
 
-#View(dig_n.df)
+# Relation tab reactive filtering
+dig_filtered <- reactive({
+  dig.df %>%
+    filter(
+      trtmt    %in% input$trtmt_f,
+      sex      %in% input$sex_f,
+      hyperten %in% input$hyperten_f,
+      cvd      %in% input$cvd_f,
+      whf      %in% input$whf_f,
+      dig      %in% input$dig_f,
+      hosp     %in% input$hosp_f,
+      death    %in% input$death_f
+    )
+})
 
+#View(dig_n.df)
 ui <- dashboardPage(skin = "purple",
                     dashboardHeader(
                       title = tags$span("DIG Trial Dashboard",

@@ -98,4 +98,19 @@ function(input, output, session) {
       list(range  = c(min(p.df$sysbp, na.rm = TRUE), max(p.df$sysbp, na.rm = TRUE)), label  = "Systolic BP", values = p.df$sysbp),
       list(tickvals = c(1, 2), ticktext = c("Male", "Female"), label    = "Sex", values   = p.df$sex)))
   output$overviewPlot <- renderPlotly({ggplotly(p)}) #rendering
+  
+  # Relation tab reactive filtering
+  dig_filtered <- reactive({
+    dig.df %>%
+      filter(
+        trtmt    %in% input$trtmt_f,
+        sex      %in% input$sex_f,
+        hyperten %in% input$hyperten_f,
+        cvd      %in% input$cvd_f,
+        whf      %in% input$whf_f,
+        dig      %in% input$dig_f,
+        hosp     %in% input$hosp_f,
+        death    %in% input$death_f
+      )
+  })
 }

@@ -30,15 +30,13 @@ ui <- dashboardPage(skin = "green",
                     dashboardHeader(
                       title = tags$span("DIG Trial Dashboard",
                                         style = "color: white; font-size: 20px; font-weight:bold;")  # fixed front-size -> font-size
-                    ),
+                      ),
                     
                     dashboardSidebar(
                       sidebarMenu(
                         menuItem("About the dataset", tabName = "info"),
                         menuItem("Overview", tabName = "over"),
-                        menuItem("Analysis for two variables", tabName = "relation"),
-                        menuItem("Summary Tables", tabName = "tables"))
-                    ),
+                        menuItem("Analysis for two variables", tabName = "relation"))),
                     
                     dashboardBody(
                       skin = "red",
@@ -64,31 +62,29 @@ ui <- dashboardPage(skin = "green",
           font-weight: bold !important;    /*bold*/
         }
        "))
-                      ),
-                      
-                      tabItems(
-                        tabItem(tabName = "info",
-                                h2("About the Trial"),
-                                uiOutput("info_para"),
-                                h3("Legends of the dataset"),
-                                dataTableOutput("legends"),
-                                h3("Dataset"),
-                                dataTableOutput("digds")),
-                        
-                       # for analysis 
-                         tabItem(tabName = "relation",
-                                h2("Two Variable Analysis"),
-                                varSelectInput("xvar","X variable:", dig_n.df),
-                                varSelectInput("yvar","Y variable:", dig_n.df),
-                                ),
-                        
-                        tabItem(tabName = "over",
-                        h2("Overview of the dataset"),
-                        uiOutput("over_ds"),
-                        h3("Parallel Coordinate Graph the of Baseline characteristics"),
-                        plotlyOutput("overviewPlot"))
-                      
-                        
-                      )
-                    )
+        ),
+        
+        tabItems(
+          tabItem(tabName = "info",
+                  h2("About the Trial"),
+                  uiOutput("info_para"),
+                  h3("Legends of the dataset"),
+                  dataTableOutput("legends"),
+                  h3("Dataset"),
+                  dataTableOutput("digds")),
+          
+         # for analysis 
+           tabItem(tabName = "relation",
+                  h2("Two Variable Analysis"),
+                  varSelectInput("xvar","X variable:", dig_n.df),
+                  varSelectInput("yvar","Y variable:", dig_n.df),
+                  ),
+          
+          tabItem(tabName = "over",
+          h2("Overview of the dataset"),
+          uiOutput("over_ds"),
+          h3("Parallel Coordinate Graph the of Baseline characteristics"),
+          plotlyOutput("overviewPlot"))
+    )
+  )
 )

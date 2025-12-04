@@ -44,7 +44,7 @@ ui <- dashboardPage(skin = "green",
                       skin = "red",
                       # CSS to style the sidebar menu item
                       tags$head(
-                        tags$style(HTML(" /*Style 'About the dataset' menuItem*/
+                        tags$style(HTML("/*Style 'About the dataset' menuItem*/
         .sidebar-menu li a[data-value='info'] {
           color: white !important;       /*text color*/
           font-size: 18px !important;      /*font size */

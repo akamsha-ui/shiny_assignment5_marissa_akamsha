@@ -52,7 +52,7 @@ ui <- dashboardPage(skin = "purple",
                       sidebarMenu(
                         menuItem("About the dataset", tabName = "info"),
                         menuItem("Overview", tabName = "over"),
-                        menuItem("Analysis for two variables", tabName = "relation"))),
+                        menuItem("Analysis of the Data", tabName = "relation"))),
                     
                     dashboardBody(
                       # CSS(cascading style sheet) to style the sidebar menu item

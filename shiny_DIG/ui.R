@@ -103,11 +103,7 @@ ui <- dashboardPage(skin = "purple",
                                     uiOutput("x_range_slider"),
                                     varSelectInput("yvar","Y variable:", dig_n.df[, c("age","bmi","klevel","creat","diabp","sysbp")], selected = "bmi"),
                                     uiOutput("y_range_slider"),
-<<<<<<< HEAD
-                                    
-=======
 
->>>>>>> 530b11648079e56632f56fa181cab4f7343cab20
                                     #check box  Treatment, Sex, Hypertension, CVD, Worsening HF, Digoxin toxicity, Any hospitalization, Death
                                     h4("Discrete variables"),
                                     fluidRow(
@@ -145,6 +141,8 @@ ui <- dashboardPage(skin = "purple",
                                   # rendering scatter plot  
                                   box(
                                     width = 8,
+                                    downloadButton("download_relation_plot", "Download plot"),
+                                    br(), br(),
                                     plotOutput("relation_plot"))
                                 )
                         )

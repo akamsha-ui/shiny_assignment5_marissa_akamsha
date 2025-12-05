@@ -174,7 +174,7 @@ function(input, output, session) {
   # Plot rendering
   output$relation_plot <- renderPlot({
     req(input$xvar, input$yvar)
-    df <- dig_filtered()
+    df <- dig_filtered_range()
     
     p <- ggplot(df, aes(x = !!input$xvar, y = !!input$yvar, color = trtmt)) +
       geom_point(alpha = 0.7) +
@@ -202,4 +202,54 @@ function(input, output, session) {
     }
     p
   }, res = 100)
+  
+  ## for the download button
+  output$download_relation_plot <- downloadHandler(
+    filename = function() {
+      paste0("DIG_relation_plot_", Sys.Date(), ".png")
+    },
+    content = function(file) {
+      #the same rendering as above, this is done because of scoping
+      req(input$xvar, input$yvar)
+      df <- dig_filtered_range()
+      
+      # base ggplot
+      p <- ggplot(df, aes(x = !!input$xvar, y = !!input$yvar, color = trtmt)) +
+        geom_point(alpha = 0.7) +
+        theme_minimal() +
+        labs(
+          title = paste("Graph of", as_label(input$yvar), "vs", as_label(input$xvar)),
+          x     = as_label(input$xvar),
+          y     = as_label(input$yvar),
+          color = "Treatment"
+        ) +
+        theme(
+          plot.title      = element_text(hjust = 0.5),
+          legend.position = "bottom"
+        )
+      
+      if (isTRUE(input$add_smoother)) {
+        p <- p + geom_smooth(se = TRUE)
+      }
+      
+      if (isTRUE(input$show_margins)) {
+        p <- ggExtra::ggMarginal(
+          p,
+          type        = input$margin_type,
+          margins     = "both",
+          size        = 8,
+          groupColour = TRUE,
+          groupFill   = TRUE
+        )
+      }
+      
+      #to included margins in the png obtained
+      png(filename = file, width = 1200, height = 800, res = 150)
+      print(p)
+      dev.off()
+    }
+  )
+  
+  
+  
 }

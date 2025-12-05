@@ -69,7 +69,6 @@ dashboardPage(skin = "purple",
                         )),
                       
 #About page###############################################################################################################
-                      #for the main page 
                       tabItems(
                         tabItem(tabName = "info",
                                 fluidRow(box(

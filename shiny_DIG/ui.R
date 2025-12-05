@@ -135,7 +135,7 @@ ui <- dashboardPage(skin = "purple",
                                   ),
                                   box(
                                     width = 8,
-                                    h4("How to make the graph:"),
+                                    h4("How to make the Graph"),
                                     uiOutput("usergraph")),
                                     
                                   # rendering scatter plot  

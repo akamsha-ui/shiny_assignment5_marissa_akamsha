@@ -128,7 +128,7 @@ function(input, output, session) {
   output$y_range_slider <- renderUI({
     req(input$yvar)
     y_data <- dig_filtered()[[input$yvar]]
-    sliderInput("y_range", paste("Range of ", input$xvar, ":"), 
+    sliderInput("y_range", paste("Range of ", input$yvar, ":"), 
                 min = round(min(y_data, na.rm = TRUE), 1),
                 max = round(max(y_data, na.rm = TRUE), 1),
                 value = c(min(y_data, na.rm = TRUE), max(y_data, na.rm = TRUE)),
@@ -152,11 +152,13 @@ function(input, output, session) {
   HTML("<p>A scatter plot is ideal for showing the relationship between two continuous variables.<p> 
          <p>For example, if you set Age on the X-axis and BMI on the Y-axis (both continuous variables), 
          the scatter plot will display how BMI values vary across different ages, helping you identify 
-         patterns, trends, or potential correlations between the two variables.<p>
+         patterns, trends, or potential correlations between the two variables. Using the range selectors, can 
+         further narrow the displayed data by specifying the desired ranges for each continuous variable.<p>
          <p>Additionally, selecting the relevant discrete variables (using the discrete variable checkbox) 
          allows you to filter the data more effectively and customize the graph output according to your specific needs.<p>
          <p>You can further enhance your visualization by adding additional parameters such as 
-         marginal plots (here, histograms or density plots) and a trend line to provide deeper insights into the data.<p>")})
+         marginal plots (here, histograms or density plots) and a trend line to provide deeper insights into the data.<p>
+         <p>Finally you will be able to download the plotted graph with the top left conner of the box.<p>")})
   
   # Plot rendering
   output$relation_plot <- renderPlot({

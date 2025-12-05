@@ -8,6 +8,7 @@ library(plotly)
 library(bslib)
 library(ggExtra)
 
+#Dataset creation###############################################################################################################
 # read the DIG data set (using select for the needed data set)
 dig.df <- read.csv("DIG.csv") %>%
   janitor::clean_names() %>%
@@ -43,8 +44,8 @@ dig_filtered <- reactive({
     )
 })
 
-#View(dig_n.df)
-ui <- dashboardPage(skin = "purple",
+#ui code
+dashboardPage(skin = "purple",
                     dashboardHeader(
                       title = tags$span("DIG Trial Dashboard",
                                         style = "color: forrestgreen; font-size: 20px; font-weight:bold;")),# for font size and color for the dashboard
@@ -67,6 +68,7 @@ ui <- dashboardPage(skin = "purple",
                         .tab-content h4 {color: indigo;font-size: 22px;}")
                         )),
                       
+#About page###############################################################################################################
                       #for the main page 
                       tabItems(
                         tabItem(tabName = "info",
@@ -82,7 +84,7 @@ ui <- dashboardPage(skin = "purple",
                                     dataTableOutput("digds"),
                                     width = 12))),
                         
-                        #for overview 
+#Overview page###############################################################################################################
                         tabItem(tabName = "over",
                                 fluidRow(box(
                                   h2("Overview of the dataset"),
@@ -92,7 +94,7 @@ ui <- dashboardPage(skin = "purple",
                                       plotlyOutput("overviewPlot"),
                                       width = 12))),
                         
-                        # for analysis tab 
+#Analysis page###############################################################################################################
                         tabItem(tabName = "relation",
                                 h2("Multiple Variable Analysis"),
                                 fluidPage(

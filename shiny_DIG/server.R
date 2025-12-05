@@ -153,6 +153,7 @@ function(input, output, session) {
   
   
   # instruction on how to generate the graph       
+  
   output$usergraph <- renderText({
     HTML("<p>A scatter plot is ideal for showing the relationship between two continuous variables.<p> 
          <p>For example, if you set Age on the X-axis and BMI on the Y-axis (both continuous variables), 
@@ -238,7 +239,7 @@ function(input, output, session) {
         )
       }
       
-      #to included margins in the png obtained
+      #to included marginal graphs in the png obtained
       png(filename = file, width = 1200, height = 800, res = 150)
       print(p)
       dev.off()

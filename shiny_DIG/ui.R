@@ -25,7 +25,7 @@ dig.df <- read.csv("DIG.csv") %>%
          hospdays, death)
 
 
-# Select numeric columns for variable selection dropdowns
+# Select numeric columns for variable selection drop downs
 dig_n.df <- dig.df %>% select(where(is.numeric))
 num_vars <- names(dig_n.df)
 
@@ -44,7 +44,7 @@ dig_filtered <- reactive({
     )
 })
 
-#ui code
+#ui code 
 dashboardPage(skin = "purple",
                     dashboardHeader(
                       title = tags$span("DIG Trial Dashboard",

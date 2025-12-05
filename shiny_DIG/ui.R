@@ -8,7 +8,7 @@ library(plotly)
 library(bslib)
 library(ggExtra)
 
-#Dataset###############################################################################################################
+#Dataset creation###############################################################################################################
 # read the DIG data set (using select for the needed data set)
 dig.df <- read.csv("DIG.csv") %>%
   janitor::clean_names() %>%

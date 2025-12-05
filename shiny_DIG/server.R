@@ -207,7 +207,7 @@ function(input, output, session) {
       req(input$xvar, input$yvar)
       df <- dig_filtered_range()
       
-      # base ggplot
+      #base ggplot
       p <- ggplot(df, aes(x = !!input$xvar, y = !!input$yvar, color = trtmt)) +
         geom_point(alpha = 0.7) +
         theme_minimal() +

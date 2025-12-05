@@ -45,27 +45,27 @@ dig_filtered <- reactive({
 })
 
 #ui code 
-dashboardPage(skin = "blue",
+dashboardPage(skin = "purple",
                     dashboardHeader(
                       title = tags$span("DIG Trial Dashboard",
-                                        style = "color: forrestgreen; font-size: 20px; font-weight:bold;")),# for font size and color for the dashboard
+                                        style = "color: white; font-size: 19px; font-weight:bold; font-family: 'comic sans ms'")),# for font size and color for the dashboard
                     dashboardSidebar(
                       sidebarMenu(
-                        menuItem("About the dataset", tabName = "info"),
-                        menuItem("Overview", tabName = "over"),
-                        menuItem("Analysis of the Data", tabName = "relation"))),
+                        menuItem("About the dataset", tabName = "info", icon = icon("th")),
+                        menuItem("Overview", tabName = "over", icon = icon("chart-area")),
+                        menuItem("Analysis of the Data", tabName = "relation", icon = icon("bed-pulse")))),
                     
                     dashboardBody(
                       # CSS(cascading style sheet) to style the sidebar menu item
                       tags$head(
                         # to customize the menu item(information, overview, relation) for text color and font size
                         tags$style(HTML("
-                        .sidebar-menu li a[data-value='info'] {color: white;font-size: 18px;font-weight: bold;}
-                        .sidebar-menu li a[data-value='over'] {color: white;font-size: 18px;font-weight: bold;}
-                        .sidebar-menu li a[data-value='relation'] {color: white;font-size: 18px;font-weight: bold;}
-                        .tab-content h2 {color: darkmagenta;font-size: 28px;font-weight: bold;}
-                        .tab-content h3 {color: indigo;font-size: 25px;}
-                        .tab-content h4 {color: indigo;font-size: 22px;}")
+                        .sidebar-menu li a[data-value='info'] {color: #B9A1E8;font-size: 17px;font-weight: bold;font-family: 'comic sans ms'}
+                        .sidebar-menu li a[data-value='over'] {color: #B9A1E8;font-size: 17px;font-weight: bold;font-family: 'comic sans ms'}
+                        .sidebar-menu li a[data-value='relation'] {color: #B9A1E8;font-size: 17px;font-weight: bold;font-family: 'comic sans ms'}
+                        .tab-content h2 {color: #2F175E;font-size: 28px;font-weight: bold;font-family: 'comic sans ms';}
+                        .tab-content h3 {color: #542AA7;font-size: 25px;font-family: 'comic sans ms'}
+                        .tab-content h4 {color: #542AA7;font-size: 22px;font-family: 'comic sans ms'}")
                         )),
                       
 #About page###############################################################################################################

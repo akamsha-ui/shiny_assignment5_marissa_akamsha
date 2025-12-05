@@ -8,17 +8,10 @@ library(plotly)
 library(bslib)
 library(ggExtra)
 
-# para1 = ("The DIG (Digitalis Investigation Group) Trial was a randomized, double-blind, multicenter trial with more than 300 centers in the United States and Canada participating. The purpose of the trial was to examine the safety and efficacy of Digoxin in treating patients with congestive heart failure in sinus rhythm. Digitalis was introduced clinically more than 200 years ago and has since become a commonly prescribed medication for the treatment of heart failure; however, there was considerable uncertainty surrounding its safety and efficacy. Small trials indicated that Digoxin alleviated some of the symptoms of heart failure, prolonged exercise tolerance, and generally improved the quality of patients' lives. Unfortunately, these trials were generally small and although they did focus on the effect of treatment on patients’ relief from heart failure symptoms and quality of life, they failed to address the effect of treatment on cardiovascular outcomes. Questions about the safety of Digoxin were also a concern. Digoxin toxicity is uncommon in small trials with careful surveillance, however, the long-term effects of therapeutic levels of Digoxin were less clear.")
-# para2 = ("The DIG dataset consists of baseline and outcome data from the main DIG trial. In the main trial, heart failure patients meeting the eligibility criterion and whose ejection fraction was 45% or less were randomized to receive either a placebo or digoxin. Outcomes assessed in the trial included: cardiovascular mortality, hospitalization or death from worsening heart failure, hospitalization due to other cardiovascular causes and hospitalization due to non-cardiovascular causes.")
-# para3 = ("It was obtained for the purpose of this assignment and is enclosed with this assignment. The codebook associated with the variables is also enclosed with your assignment.")
-# para4 = ("In order to create an anonymous dataset that protects patient confidentiality, most variables have been permuted over the set of patients within treatment group. Therefore, it would be inappropriate to use this dataset for other research or publication purposes.")
-# rev = paste(para1, para2, para3, para4, sep = "<p>")
-# rev
-
 #server code
 function(input, output, session) {
   
-  ##About the dataset page
+#About page###############################################################################################################
   output$info_para <- renderUI({
     HTML("<p>The DIG (Digitalis Investigation Group) Trial was a randomized, double-blind, 
          multicenter trial with more than 300 centers in the United States and Canada participating. 
@@ -71,10 +64,10 @@ function(input, output, session) {
   
   output$digds <- renderDataTable({dig.df}) #rendering
   
-  ##overview page
+#Overview page###############################################################################################################
   output$over_ds <- renderText({
     HTML("<p>The parallel coordinate plot below visualizes the baseline characteristics for all continuous variables in the dataset, with the placebo group shown in orange and the treatment group shown in cyan. 
-    The two treatment groups are Placebo group (as orange lines) and Treatment group (as cyan lines). <p>
+    The two treatment groups are Placebo group (as cyan lines) and Treatment group (as jade lines). <p>
          <p>An outlier value of 434 in the Serum Potassium (KLEVEL) variable, likely due to a data entry error, was removed to improve clarity.<p>
          <p>This plot allows us to compare multivariate patterns between the two groups across several baseline variables, including age, sex, body mass index, serum potassium, serum creatinine, diastolic blood pressure, and systolic blood pressure, and helps reveal differences, similarities, and potential trends among the treatment groups.<p>")})
   p.df <- read.csv("DIG.csv") %>%
@@ -87,7 +80,7 @@ function(input, output, session) {
     type = "parcoords",
     line = list(
       color     = p.df$trtmt,
-      colorscale = list(c(0, "#ff7f00"), c(1, "#12C0DE")),
+      colorscale = list(c(0, "#1BC9E4"), c(1, "#1BE49A")),
       showscale = TRUE, alpha = 0.2),
     dimensions = list(
       list(tickvals = c(0, 1), ticktext = c("Placebo", "Treatment"), label    = "Treatment", values   = p.df$trtmt),
@@ -100,6 +93,7 @@ function(input, output, session) {
       list(tickvals = c(1, 2), ticktext = c("Male", "Female"), label    = "Sex", values   = p.df$sex)))
   output$overviewPlot <- renderPlotly({ggplotly(p)}) #rendering
   
+#Analysis page###############################################################################################################
   # Relation tab reactive filtering
   dig_filtered <- reactive({
     dig.df %>%
@@ -249,7 +243,4 @@ function(input, output, session) {
       dev.off()
     }
   )
-  
-  
-  
 }

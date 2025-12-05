@@ -45,7 +45,7 @@ dig_filtered <- reactive({
 })
 
 #ui code 
-dashboardPage(skin = "purple",
+dashboardPage(skin = "blue",
                     dashboardHeader(
                       title = tags$span("DIG Trial Dashboard",
                                         style = "color: forrestgreen; font-size: 20px; font-weight:bold;")),# for font size and color for the dashboard
@@ -146,7 +146,7 @@ dashboardPage(skin = "purple",
                                     br(), br(),
                                     plotOutput("relation_plot"))
                                 )
-                        )
-                      )
-                    )
+   )
+  )
+ )
 )

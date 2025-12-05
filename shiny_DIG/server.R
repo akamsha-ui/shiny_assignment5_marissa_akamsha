@@ -166,7 +166,7 @@ function(input, output, session) {
          patterns, trends, or potential correlations between the two variables. Using the range selectors, can 
          further narrow the displayed data by specifying the desired ranges for each continuous variable.<p>
          <p>Additionally, selecting the relevant discrete variables (using the discrete variable checkbox) 
-         allows you to filter the data more effectively and customize the graph output according to your specific needs.<p>
+         allows you to filter the data more effectively and customize the graph output (user will need to select atleast one box for an output ) according to your specific needs.<p>
          <p>You can further enhance your visualization by adding additional parameters such as 
          marginal plots (here, histograms or density plots) and a trend line to provide deeper insights into the data.<p>
          <p>Finally you will be able to download the plotted graph with the top left conner of the box.<p>")})

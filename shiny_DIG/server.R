@@ -157,27 +157,6 @@ function(input, output, session) {
                 step = (max(x_data, na.rm = TRUE) - min(x_data, na.rm = TRUE)) / 100)
   })
   
-  output$y_range_slider <- renderUI({
-    req(input$yvar)
-    y_data <- dig_filtered()[[input$yvar]]
-    sliderInput("y_range", paste("Range of ", input$yvar, ":"), 
-                min = round(min(y_data, na.rm = TRUE), 1),
-                max = round(max(y_data, na.rm = TRUE), 1),
-                value = c(min(y_data, na.rm = TRUE), max(y_data, na.rm = TRUE)),
-                step = (max(y_data, na.rm = TRUE) - min(y_data, na.rm = TRUE)) / 100)
-  })
-  
-  dig_filtered_range <- reactive({
-    df <- dig_filtered()
-    
-    if (!is.null(input$x_range)) {
-      df <- df %>% filter(between(!!sym(input$xvar), input$x_range[1], input$x_range[2]))
-    }
-    if (!is.null(input$y_range)) {
-      df <- df %>% filter(between(!!sym(input$yvar), input$y_range[1], input$y_range[2]))
-    }
-    df
-  })
   
   # instruction on how to generate the graph       
   output$usergraph <- renderText({

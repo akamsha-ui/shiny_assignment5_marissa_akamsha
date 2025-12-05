@@ -100,8 +100,10 @@ ui <- dashboardPage(skin = "purple",
                                     h4("Continous variables"),
                                     width = 4,
                                     varSelectInput("xvar","X variable:", dig_n.df[, c("age","bmi","klevel","creat","diabp","sysbp")], selected = "age"),
+                                    uiOutput("x_range_slider"),
                                     varSelectInput("yvar","Y variable:", dig_n.df[, c("age","bmi","klevel","creat","diabp","sysbp")], selected = "bmi"),
-                                    
+                                    uiOutput("y_range_slider"),
+
                                     #check box  Treatment, Sex, Hypertension, CVD, Worsening HF, Digoxin toxicity, Any hospitalization, Death
                                     h4("Discrete variables"),
                                     fluidRow(
@@ -119,7 +121,7 @@ ui <- dashboardPage(skin = "purple",
                                         checkboxGroupInput("death_f","Death", choices = levels(dig.df$death), selected = levels(dig.df$death))
                                       )),
                                     
-                                    #other parameters that include for addition of histogram or density garph on the margin          
+                                    #other parameters that include for addition of histogram or density graph on the margin          
                                     hr(),
                                     h4("Other Parameters"),
                                     checkboxInput("show_margins", "Show marginal plots", T),
